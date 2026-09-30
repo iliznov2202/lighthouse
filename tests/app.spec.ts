@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => { pageErrors = []; page.on('pageerror', erro
 test.afterEach(async () => { expect(pageErrors).toEqual([]) })
 
 async function demo(page: Page) { await page.goto('/'); await page.getByRole('button', { name: 'Заглянуть в демо 9Б' }).click() }
-async function nav(page: Page, label: string) { const root = await page.locator('.desktop-nav').isVisible() ? '.desktop-nav' : '.bottom-nav'; await page.locator(root).getByRole('button', { name: new RegExp(`^${label}`) }).click() }
+async function nav(page: Page, label: string) { await expect(page.locator('.app-header')).toBeVisible(); const root = await page.locator('.desktop-nav').isVisible() ? '.desktop-nav' : '.bottom-nav'; await page.locator(root).getByRole('button', { name: new RegExp(`^${label}`) }).click() }
 async function noOverflow(page: Page) { expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy() }
 
 test('onboarding: school search, class selection and profile survive reload', async ({ page }) => {
@@ -236,11 +236,11 @@ test('navigation keeps the selected feed, schedule day and scroll position', asy
   await page.evaluate(() => window.scrollTo(0, 250))
   await nav(page, 'Учёба')
   await page.getByRole('tab', { name: 'Расписание', exact: true }).click()
-  await page.getByRole('button', { name: /^Чт1$/ }).click()
+  await page.getByRole('button', { name: /^Чт\s*1$/ }).click()
   await nav(page, 'Профиль')
   await nav(page, 'Учёба')
   await expect(page.getByRole('tab', { name: 'Расписание', exact: true })).toHaveAttribute('aria-selected', 'true')
-  await expect(page.getByRole('button', { name: /^Чт1$/ })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: /^Чт\s*1$/ })).toHaveAttribute('aria-pressed', 'true')
   await nav(page, 'Лента')
   await expect(page.getByRole('button', { name: 'Вся школа', exact: true })).toHaveClass('active')
   await expect.poll(async () => page.evaluate(() => window.scrollY)).toBe(250)

@@ -17,11 +17,19 @@ export function Lighthouse({ className = '' }: { className?: string }) {
     <path d="m75 45-17 66c18-4 37 16 61 8l-18-74Z" fill={`url(#${id}tower)`} />
     <path d="M72 27h34v22H72Z" fill={`url(#${id}tower)`} />
     <path d="M79 29h20v14H79Z" fill="#fff7d6" />
-    <path d="m90 32 70-20v62L90 40Z" fill={`url(#${id}beam)`} />
+    <path className="lighthouse-beam" d="m90 32 70-20v62L90 40Z" fill={`url(#${id}beam)`} />
     <path d="M73 61c8-9 21-12 32-8l5 17c-12-9-25-11-40 7Z" fill="#c59fff" opacity=".7" />
-    <path d="M7 120c27-62 62-20 89-6 25 13 41 6 53-6-14 40-47 40-76 24-26-14-43-16-66-12Z" fill={`url(#${id}wave)`} />
-    <path d="M7 120c34-30 58 13 94 9 22-2 36-8 48-21-15 18-38 17-62 5-29-14-56-9-80 7Z" fill="#75d8ff" opacity=".5" />
+    <g className="lighthouse-wave">
+      <path d="M7 120c27-62 62-20 89-6 25 13 41 6 53-6-14 40-47 40-76 24-26-14-43-16-66-12Z" fill={`url(#${id}wave)`} />
+      <path d="M7 120c34-30 58 13 94 9 22-2 36-8 48-21-15 18-38 17-62 5-29-14-56-9-80 7Z" fill="#75d8ff" opacity=".5" />
+    </g>
   </svg>
+}
+export function LighthouseLoader({ title = 'Зажигаем Маяк…', description = 'Скоро всё будет рядом', splash = false }: { title?: string; description?: string; splash?: boolean }) {
+  return <div className={`lighthouse-loader ${splash ? 'lighthouse-splash' : ''}`} role="status" aria-live="polite">
+    <div className="lighthouse-loader-art" aria-hidden="true"><div className="lighthouse-loader-halo" /><Lighthouse className="lighthouse-animated" /></div>
+    <h2>{title}</h2><p>{description}</p><div className="lighthouse-loader-dots" aria-hidden="true"><i /><i /><i /></div>
+  </div>
 }
 export function Brand({ compact = false }: { compact?: boolean }) {
   return <div className={`brand ${compact ? 'compact' : ''}`}><Lighthouse /><span>Маяк<span className="brand-dot">.</span></span></div>

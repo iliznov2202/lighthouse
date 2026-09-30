@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import { BarChart3, Bookmark, Check, ChevronDown, ChevronLeft, ChevronRight, Heart, MessageCircle, MoreHorizontal, Shield } from 'lucide-react'
+import { ArrowRight, BarChart3, Bookmark, Check, ChevronDown, ChevronLeft, ChevronRight, Heart, MessageCircle, MoreHorizontal, Shield } from 'lucide-react'
 import type { Post, Profile, Reaction } from '../types'
 import { reactionCounts, reactionTypes, reactToPost, selectedReaction, voteInPoll } from '../lib/social'
 import { Avatar, Modal, PicnicArt, Tag } from './ui'
 
 interface Props {
+  onCompetition?: () => void;
   post: Post; profile: Profile; onUpdate: (post: Post) => void;
   onComments: () => void; onMenu: () => void; notify: (message: string) => void
 }
 
-export default function SocialPost({ post, profile, onUpdate, onComments, onMenu, notify }: Props) {
+export default function SocialPost({ onCompetition, post, profile, onUpdate, onComments, onMenu, notify }: Props) {
   const [photoIndex, setPhotoIndex] = useState<number | null>(null)
   const photos = post.photos ?? []
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function SocialPost({ post, profile, onUpdate, onComments, onMenu
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
   }, [photoIndex, photos.length])
-  return <article className="post-card">
+  return <article className={`post-card ${post.competitionEventId ? 'competition-system-post' : ''}`}>
     <header className="post-header"><Avatar person={post.avatar} /><div className="post-author"><strong>{post.author}</strong><span>{post.time}<span className="dot-separator">·</span>{post.scope === 'class' ? profile.className : profile.school}</span></div><button className="icon-button" aria-label={`Действия с публикацией ${post.author}`} onClick={onMenu}><MoreHorizontal size={20} /></button></header>
     {post.anonymous && <Tag><Shield size={12} />Анонимно</Tag>}
     {post.text && <p className="post-text">{post.text}</p>}
@@ -29,6 +30,7 @@ export default function SocialPost({ post, profile, onUpdate, onComments, onMenu
     {photos.length > 0 && <div className="post-photo-grid" data-count={photos.length}>{photos.map((photo, index) => <button key={photo.id} aria-label={`Открыть фотографию ${index + 1}`} onClick={() => setPhotoIndex(index)}><img src={photo.src} alt={photo.alt} loading="lazy" /></button>)}</div>}
     {post.poll && <PollCard post={post} onUpdate={onUpdate} />}
     {post.tag && <div className="post-topic"><span>#</span>{post.tag}</div>}
+    {post.competitionEventId && <button className="competition-post-cta" onClick={onCompetition}>Участвовать<ArrowRight size={17} /></button>}
     <footer className="post-actions">
       <Reactions post={post} onUpdate={onUpdate} />
       <button aria-label={`Комментарии: ${post.author}`} onClick={onComments}><MessageCircle size={20} />{post.comments.length || 'Обсудить'}</button>

@@ -12,7 +12,7 @@ export interface Post {
   id: string; author: string; avatar: string; color: string; time: string; scope: Scope;
   text: string; likes: number; liked: boolean; saved: boolean; comments: Comment[];
   anonymous?: boolean; tag?: string; art?: 'picnic' | 'concert'; pinned?: boolean;
-  reactions?: Partial<Record<Reaction, number>>; reaction?: Reaction | null; photos?: PostPhoto[]; poll?: Poll
+  reactions?: Partial<Record<Reaction, number>>; reaction?: Reaction | null; photos?: PostPhoto[]; poll?: Poll; competitionEventId?: string
 }
 export interface Homework { id: string; subject: Subject; text: string; date: string; minutes: number; done: boolean; source: string }
 export interface Lesson { subject: Subject; room: string; teacher: string; time: string }
