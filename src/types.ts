@@ -1,3 +1,5 @@
+import type { StickerName } from './design/stickers'
+
 export type Tab = 'feed' | 'study' | 'notifications' | 'profile'
 export type StudyTab = 'today' | 'schedule' | 'homework' | 'tutor'
 export type Scope = 'class' | 'school'
@@ -11,7 +13,7 @@ export interface Poll { question: string; options: PollOption[]; selectedOption:
 export interface Post {
   id: string; author: string; avatar: string; color: string; time: string; scope: Scope;
   text: string; likes: number; liked: boolean; saved: boolean; comments: Comment[];
-  anonymous?: boolean; tag?: string; art?: 'picnic' | 'concert'; pinned?: boolean;
+  sticker?: StickerName; anonymous?: boolean; tag?: string; art?: 'picnic' | 'concert'; pinned?: boolean;
   reactions?: Partial<Record<Reaction, number>>; reaction?: Reaction | null; photos?: PostPhoto[]; poll?: Poll; competitionEventId?: string
 }
 export interface Homework { id: string; subject: Subject; text: string; date: string; minutes: number; done: boolean; source: string }

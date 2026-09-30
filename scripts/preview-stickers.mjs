@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test';
+import { readdir } from 'node:fs/promises';
+const filenames=(await readdir(new URL('../stickers/',import.meta.url))).filter(f=>f.endsWith('.svg'));
+const browser=await chromium.launch({channel:'chrome'});
+const page=await browser.newPage({viewport:{width:1080,height:860},deviceScaleFactor:1});
+await page.setContent('<style>body{font:12px system-ui;background:#f4f4f9;margin:24px}main{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}figure{margin:0;padding:16px 8px;background:white;border-radius:16px;text-align:center}img{width:112px;height:112px;object-fit:contain}figcaption{margin-top:8px;word-break:break-all;color:#667}</style><main>'+filenames.map(f=>'<figure><img src="http://127.0.0.1:5173/stickers/'+f+'"/><figcaption>'+f+'</figcaption></figure>').join('')+'</main>');
+await page.waitForFunction(()=>[...document.images].every(img=>img.complete&&img.naturalWidth>0));
+await page.screenshot({path:'artifacts/stickers-contact-sheet.png',fullPage:true});
+await browser.close();
+console.log('Sticker preview rendered');

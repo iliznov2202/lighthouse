@@ -4,19 +4,19 @@ import type { Homework, Lesson, Notice, Post, Profile, Subject } from '../types'
 export const DEMO_DATE = '2026-09-30'
 export const defaultProfile: Profile = { name: 'Саша', school: 'Школа № 57', className: '9Б', bio: 'Музыка в наушниках, идеи в голове ✨' }
 export const schools = ['Школа № 57', 'Школа № 1535', 'Лицей «Вторая школа»', 'Школа № 179']
-export const subjects: Record<Subject, { icon: string; color: string; teacher: string; room: string }> = {
-  'Алгебра': { icon: '∑', color: 'purple', teacher: 'Елена Сергеевна', room: '304' },
-  'Геометрия': { icon: '△', color: 'purple', teacher: 'Елена Сергеевна', room: '304' },
-  'Русский язык': { icon: 'Аа', color: 'blue', teacher: 'Ольга Викторовна', room: '211' },
-  'Литература': { icon: 'Б', color: 'pink', teacher: 'Ольга Викторовна', room: '211' },
-  'Английский язык': { icon: 'En', color: 'orange', teacher: 'Мария Андреевна', room: '208' },
-  'История': { icon: '⌛', color: 'orange', teacher: 'Дмитрий Павлович', room: '302' },
-  'Физика': { icon: 'φ', color: 'blue', teacher: 'Андрей Игоревич', room: '315' },
-  'Химия': { icon: 'H₂', color: 'mint', teacher: 'Наталья Ивановна', room: '312' },
-  'Биология': { icon: '✿', color: 'mint', teacher: 'Наталья Ивановна', room: '310' },
-  'География': { icon: '◎', color: 'blue', teacher: 'Ирина Петровна', room: '305' },
-  'Информатика': { icon: '</>', color: 'purple', teacher: 'Алексей Романович', room: '401' },
-  'Физкультура': { icon: '↗', color: 'mint', teacher: 'Сергей Алексеевич', room: 'Спортзал' },
+export const subjects: Record<Subject, { color: string; teacher: string; room: string }> = {
+  'Алгебра': { color: 'purple', teacher: 'Елена Сергеевна', room: '304' },
+  'Геометрия': { color: 'purple', teacher: 'Елена Сергеевна', room: '304' },
+  'Русский язык': { color: 'blue', teacher: 'Ольга Викторовна', room: '211' },
+  'Литература': { color: 'pink', teacher: 'Ольга Викторовна', room: '211' },
+  'Английский язык': { color: 'orange', teacher: 'Мария Андреевна', room: '208' },
+  'История': { color: 'orange', teacher: 'Дмитрий Павлович', room: '302' },
+  'Физика': { color: 'blue', teacher: 'Андрей Игоревич', room: '315' },
+  'Химия': { color: 'mint', teacher: 'Наталья Ивановна', room: '312' },
+  'Биология': { color: 'mint', teacher: 'Наталья Ивановна', room: '310' },
+  'География': { color: 'blue', teacher: 'Ирина Петровна', room: '305' },
+  'Информатика': { color: 'purple', teacher: 'Алексей Романович', room: '401' },
+  'Физкультура': { color: 'mint', teacher: 'Сергей Алексеевич', room: 'Спортзал' },
 }
 const times = ['08:30–09:15', '09:25–10:10', '10:30–11:15', '11:25–12:10', '12:30–13:15', '13:25–14:10']
 function lessons(names: Subject[]): Lesson[] { return names.map((subject, i) => ({ subject, ...subjects[subject], time: times[i] })) }

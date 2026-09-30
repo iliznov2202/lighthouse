@@ -1,11 +1,11 @@
 import type { Poll, Post, Reaction } from '../types'
 
-export const reactionTypes: { id: Reaction; emoji: string; label: string }[] = [
-  { id: 'heart', emoji: '💜', label: 'Нравится' },
-  { id: 'laugh', emoji: '😂', label: 'Смешно' },
-  { id: 'fire', emoji: '🔥', label: 'Огонь' },
-  { id: 'support', emoji: '🫶', label: 'Поддерживаю' },
-  { id: 'wow', emoji: '✨', label: 'Вау' },
+export const reactionTypes: { id: Reaction; label: string }[] = [
+  { id: 'heart', label: 'Нравится' },
+  { id: 'laugh', label: 'Смешно' },
+  { id: 'fire', label: 'Огонь' },
+  { id: 'support', label: 'Поддерживаю' },
+  { id: 'wow', label: 'Вау' },
 ]
 
 // Old demo posts retain their existing likes when reactions are first used.

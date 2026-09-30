@@ -1,0 +1,100 @@
+/* Functional icons have one canvas and stroke, regardless of their container. */
+svg.mayak-icon {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px;
+  flex-shrink: 0;
+  fill: none !important;
+  stroke-width: 2.5 !important;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+.mayak-sticker { display: inline-block; width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; vertical-align: middle; user-select: none; pointer-events: none; }
+.greeting-sticker { width: 43px; height: 43px; margin-left: 1px; transform: rotate(5deg); }
+.page-heading h1:has(.greeting-sticker) { display: flex; align-items: center; gap: 8px; }
+.hero-star { display: grid; place-items: center; }
+.floating-sticker { position: absolute; right: -15px; top: 28px; width: 100px; height: 100px; transform: rotate(12deg); filter: drop-shadow(0 8px 12px var(--tone-8072ae15)); }
+.subject-icon, .feature-icon, .page-symbol { display: inline-flex; align-items: center; justify-content: center; }
+.subject-icon { color: inherit; }
+.subject-icon.purple { color: var(--tone-8d7ac2); }
+.subject-icon.blue { color: var(--tone-7299c7); }
+.subject-icon.pink { color: var(--tone-b589a2); }
+.subject-icon.orange { color: var(--tone-c6a17b); }
+.subject-icon.mint { color: var(--tone-88a790); }
+.tag:has(.mayak-icon) { min-height: 32px; padding: 5px 8px; gap: 6px; }
+.demo-label { gap: 6px; line-height: 1.4; }
+.school-option .selection-check, .homework-check { min-width: 28px; min-height: 28px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.homework-time, .detail-meta > span { display: inline-flex; align-items: center; gap: 5px; }
+.homework-progress > span:last-child { display: inline-flex; align-items: center; gap: 5px; }
+.digest-period > button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+.digest-block > strong { display: flex; align-items: center; gap: 9px; }
+.reaction-main.selected { color: var(--tone-9272af); }
+.reaction-picker > button { color: var(--tone-9c90b3); min-width: 44px; }
+.reaction-picker > button.selected { color: var(--tone-8763ad); }
+.reaction-picker > button:hover .mayak-icon { transform: translateY(-2px); }
+.reaction-toggle { width: 32px; }
+.post-actions { gap: 12px; }
+.post-sticker { display: flex; justify-content: flex-start; margin: 12px 0 18px; }
+.post-sticker > .mayak-sticker { width: 128px; height: 128px; }
+.composer-tools { flex-wrap: wrap; justify-content: flex-start; gap: 10px 23px; }
+.composer-tools > button { min-height: 44px; }
+.composer-sticker-preview { position: relative; display: inline-flex; padding: 13px 44px 13px 15px; background: var(--tone-f7f4fb); border-radius: 18px; margin: 10px 0; }
+.composer-sticker-preview > .mayak-sticker { width: 120px; height: 120px; }
+.composer-sticker-preview > button { position: absolute; right: 5px; top: 5px; }
+.sticker-picker { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding: 12px; border: 1px solid var(--tone-e9e2f3); border-radius: 18px; background: var(--tone-fcfaff); margin: 7px 0 18px; max-height: 310px; overflow-y: auto; }
+.sticker-picker > button { display: grid; place-items: center; min-height: 72px; border: 1px solid transparent; border-radius: 12px; padding: 7px; }
+.sticker-picker > button > .mayak-sticker { width: 100%; max-width: 68px; height: 68px; }
+.sticker-picker > button:hover, .sticker-picker > button[aria-pressed=true] { border-color: var(--tone-cdbde5); background: var(--tone-f0e9fa); }
+.empty-state > .empty-sticker { width: 72px; height: 72px; margin-bottom: 5px; }
+.sidebar-manifest { align-items: center; gap: 8px; }
+.sidebar-manifest > .sidebar-sticker { width: 36px; height: 36px; }
+.rail-ai { position: relative; }
+.rail-ai > .rail-tutor-sticker { position: absolute; right: 14px; top: 14px; width: 80px; height: 80px; transform: rotate(7deg); }
+.rail-ai h3, .rail-ai p, .rail-ai-link { position: relative; z-index: 1; }
+.rail-ai h3 { padding-right: 0; }
+.rail-title > .rail-note-sticker { width: 38px; height: 38px; }
+.rail-small-sticker { width: 43px; height: 43px; }
+.rail-digest, .rail-event { align-items: center; gap: 10px; }
+.today-morning-sticker { width: 56px; height: 56px; position: absolute; top: 16px; right: 18px; }
+.today-digest .digest-top { padding-right: 45px; min-height: 58px; }
+.evening-sticker { width: 56px; height: 56px; }
+.schedule-sticker { width: 38px; height: 38px; margin-right: 5px; }
+.digest-sticker { width: 94px; height: 94px; margin: 2px auto 17px; display: block; }
+.profile-cover .cover-sticker { position: absolute; object-fit: contain; opacity: 1; }
+.profile-cover .cover-sticker.plane { top: 6px; left: 18%; width: 74px; height: 74px; transform: rotate(-10deg); }
+.profile-cover .cover-sticker.friends { top: 10px; right: 18%; width: 78px; height: 78px; transform: rotate(8deg); }
+.profile-hobby-sticker { width: 84px; height: 84px; }
+.concert-sticker { position: absolute; right: 31px; top: 28px; width: 134px; height: 134px; transform: rotate(8deg); }
+.concert-spark { position: absolute; right: 17px; top: 15px; color: var(--tone-cfb8e2); }
+.picnic-note strong { font-size: inherit; }
+.result-goal-sticker { position: absolute; top: 45px; right: 22px; width: 125px; height: 125px; transform: rotate(7deg); opacity: .92; }
+.share-plane-sticker { width: 42px; height: 42px; }
+.competition-winners > span > small { display: grid; place-items: center; font-size: 11px; width: 24px; height: 24px; color: var(--tone-9b8ab8); border: 1px solid var(--tone-b8a8d3); border-radius: 8px; }
+.competition-final-summary > div > span > small { font-size: 13px; color: var(--tone-9b8ab8); font-weight: 600; }
+.competition-share-card > span:last-child { min-height: 44px; }
+.tutor-topics > button { display: inline-flex; align-items: center; min-height: 40px; }
+.chat-spark { min-width: 26px; }
+@media(max-width: 600px) {
+  .greeting-sticker { width: 38px; height: 38px; }
+  .sticker-picker { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 9px; gap: 5px; }
+  .sticker-picker > button { min-height: 67px; padding: 6px; }
+  .sticker-picker > button > .mayak-sticker { height: 60px; }
+  .profile-hobby-sticker { width: 65px; height: 65px; }
+  .result-goal-sticker { width: 106px; height: 106px; top: 54px; right: 16px; }
+  .school-option small { display: flex; align-items: center; gap: 3px; }
+  .digest-top > span { gap: 6px; max-width: calc(100% - 15px); }
+  .today-morning-sticker { right: 14px; }
+  .today-digest .digest-top { min-height: 58px; }
+  .tutor-heading { flex-wrap: wrap; gap: 10px; }
+}
+@media(max-width: 350px) {
+  .greeting-sticker { width: 31px; height: 31px; }
+  .page-heading h1:has(.greeting-sticker) { font-size: 25px; gap: 5px; }
+  .post-actions { gap: 8px; }
+  .post-actions > button { gap: 5px; }
+  .post-actions > button:nth-child(2) { font-size: 11px; }
+  .result-goal-sticker { width: 92px; height: 92px; }
+  .composer-author > div { min-width: 0; }
+  .composer-author select { max-width: 195px; }
+}

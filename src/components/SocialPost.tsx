@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, BarChart3, Bookmark, Check, ChevronDown, ChevronLeft, ChevronRight, Heart, MessageCircle, MoreHorizontal, Shield } from 'lucide-react'
+import { ArrowRight, BarChart3, Bookmark, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, HandHeart, Heart, Smile, Sparkles, MessageCircle, MoreHorizontal, Shield } from '../design/icons'
 import type { Post, Profile, Reaction } from '../types'
 import { reactionCounts, reactionTypes, reactToPost, selectedReaction, voteInPoll } from '../lib/social'
+import Sticker from './Sticker'
 import { Avatar, Modal, PicnicArt, Tag } from './ui'
 
 interface Props {
@@ -23,24 +24,26 @@ export default function SocialPost({ onCompetition, post, profile, onUpdate, onC
     return () => document.removeEventListener('keydown', handler)
   }, [photoIndex, photos.length])
   return <article className={`post-card ${post.competitionEventId ? 'competition-system-post' : ''}`}>
-    <header className="post-header"><Avatar person={post.avatar} /><div className="post-author"><strong>{post.author}</strong><span>{post.time}<span className="dot-separator">·</span>{post.scope === 'class' ? profile.className : profile.school}</span></div><button className="icon-button" aria-label={`Действия с публикацией ${post.author}`} onClick={onMenu}><MoreHorizontal size={20} /></button></header>
-    {post.anonymous && <Tag><Shield size={12} />Анонимно</Tag>}
+    <header className="post-header"><Avatar person={post.avatar} /><div className="post-author"><strong>{post.author}</strong><span>{post.time}<span className="dot-separator">·</span>{post.scope === 'class' ? profile.className : profile.school}</span></div><button className="icon-button" aria-label={`Действия с публикацией ${post.author}`} onClick={onMenu}><MoreHorizontal /></button></header>
+    {post.anonymous && <Tag><Shield />Анонимно</Tag>}
     {post.text && <p className="post-text">{post.text}</p>}
+    {post.sticker && <div className="post-sticker" data-sticker={post.sticker}><Sticker name={post.sticker} decorative={false} /></div>}
     {post.art && <PicnicArt concert={post.art === 'concert'} />}
     {photos.length > 0 && <div className="post-photo-grid" data-count={photos.length}>{photos.map((photo, index) => <button key={photo.id} aria-label={`Открыть фотографию ${index + 1}`} onClick={() => setPhotoIndex(index)}><img src={photo.src} alt={photo.alt} loading="lazy" /></button>)}</div>}
     {post.poll && <PollCard post={post} onUpdate={onUpdate} />}
     {post.tag && <div className="post-topic"><span>#</span>{post.tag}</div>}
-    {post.competitionEventId && <button className="competition-post-cta" onClick={onCompetition}>Участвовать<ArrowRight size={17} /></button>}
+    {post.competitionEventId && <button className="competition-post-cta" onClick={onCompetition}>Участвовать<ArrowRight /></button>}
     <footer className="post-actions">
       <Reactions post={post} onUpdate={onUpdate} />
-      <button aria-label={`Комментарии: ${post.author}`} onClick={onComments}><MessageCircle size={20} />{post.comments.length || 'Обсудить'}</button>
+      <button aria-label={`Комментарии: ${post.author}`} onClick={onComments}><MessageCircle />{post.comments.length || 'Обсудить'}</button>
       <span className="post-action-spacer" />
-      <button className={post.saved ? 'saved' : ''} aria-label={post.saved ? 'Убрать из сохранённого' : 'Сохранить публикацию'} aria-pressed={post.saved} onClick={() => { onUpdate({ ...post, saved: !post.saved }); notify(post.saved ? 'Публикация убрана из сохранённого' : 'Публикация сохранена') }}><Bookmark size={20} fill={post.saved ? 'currentColor' : 'none'} /></button>
+      <button className={post.saved ? 'saved' : ''} aria-label={post.saved ? 'Убрать из сохранённого' : 'Сохранить публикацию'} aria-pressed={post.saved} onClick={() => { onUpdate({ ...post, saved: !post.saved }); notify(post.saved ? 'Публикация убрана из сохранённого' : 'Публикация сохранена') }}><Bookmark /></button>
     </footer>
-    {photoIndex !== null && photos[photoIndex] && <Modal title={`Фото ${photoIndex + 1} из ${photos.length}`} onClose={() => setPhotoIndex(null)} wide><div className="photo-viewer"><img src={photos[photoIndex].src} alt={photos[photoIndex].alt} />{photos.length > 1 && <div className="photo-viewer-controls"><button className="button secondary" aria-label="Предыдущая фотография" onClick={() => setPhotoIndex((photoIndex + photos.length - 1) % photos.length)}><ChevronLeft size={19} /></button><span>{photoIndex + 1} / {photos.length}</span><button className="button secondary" aria-label="Следующая фотография" onClick={() => setPhotoIndex((photoIndex + 1) % photos.length)}><ChevronRight size={19} /></button></div>}</div></Modal>}
+    {photoIndex !== null && photos[photoIndex] && <Modal title={`Фото ${photoIndex + 1} из ${photos.length}`} onClose={() => setPhotoIndex(null)} wide><div className="photo-viewer"><img src={photos[photoIndex].src} alt={photos[photoIndex].alt} />{photos.length > 1 && <div className="photo-viewer-controls"><button className="button secondary" aria-label="Предыдущая фотография" onClick={() => setPhotoIndex((photoIndex + photos.length - 1) % photos.length)}><ChevronLeft /></button><span>{photoIndex + 1} / {photos.length}</span><button className="button secondary" aria-label="Следующая фотография" onClick={() => setPhotoIndex((photoIndex + 1) % photos.length)}><ChevronRight /></button></div>}</div></Modal>}
   </article>
 }
 
+const reactionIcons = { heart: Heart, laugh: Smile, fire: Flame, support: HandHeart, wow: Sparkles }
 function Reactions({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => void }) {
   const [open, setOpen] = useState(false)
   const root = useRef<HTMLDivElement>(null)
@@ -48,6 +51,7 @@ function Reactions({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => v
   const counts = reactionCounts(post)
   const selected = selectedReaction(post)
   const current = reactionTypes.find(r => r.id === selected)
+  const SelectedIcon = reactionIcons[selected ?? 'heart']
   const total = Object.values(counts).reduce((sum, count) => sum + (count ?? 0), 0)
   useEffect(() => {
     if (!open) return
@@ -60,9 +64,9 @@ function Reactions({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => v
   function choose(reaction: Reaction) { onUpdate(reactToPost(post, reaction)); setOpen(false); trigger.current?.focus() }
   const label = selected === 'heart' ? 'Убрать лайк' : selected ? `Убрать реакцию ${current?.label}` : 'Нравится'
   return <div className="reaction-control" ref={root}>
-    <button className={`reaction-main ${selected ? 'selected' : ''}`} aria-label={`${label}: ${post.author}`} aria-pressed={Boolean(selected)} onClick={() => onUpdate(reactToPost(post, selected ?? 'heart'))}>{current && selected !== 'heart' ? <span className="reaction-emoji">{current.emoji}</span> : <Heart size={20} fill={selected === 'heart' ? 'currentColor' : 'none'} />}<span>{total}</span></button>
-    <button ref={trigger} className="reaction-toggle" aria-label={`Выбрать реакцию: ${post.author}`} aria-expanded={open} onClick={() => setOpen(!open)}><ChevronDown size={14} /></button>
-    {open && <div className="reaction-picker" role="group" aria-label="Реакции">{reactionTypes.map(r => <button key={r.id} aria-label={r.label} title={r.label} aria-pressed={selected === r.id} className={selected === r.id ? 'selected' : ''} onClick={() => choose(r.id)}><span>{r.emoji}</span><small>{counts[r.id] || '·'}</small></button>)}</div>}
+    <button className={`reaction-main ${selected ? 'selected' : ''}`} aria-label={`${label}: ${post.author}`} aria-pressed={Boolean(selected)} onClick={() => onUpdate(reactToPost(post, selected ?? 'heart'))}><SelectedIcon /><span>{total}</span></button>
+    <button ref={trigger} className="reaction-toggle" aria-label={`Выбрать реакцию: ${post.author}`} aria-expanded={open} onClick={() => setOpen(!open)}><ChevronDown /></button>
+    {open && <div className="reaction-picker" role="group" aria-label="Реакции">{reactionTypes.map(r => { const Icon = reactionIcons[r.id]; return <button key={r.id} aria-label={r.label} title={r.label} aria-pressed={selected === r.id} className={selected === r.id ? 'selected' : ''} onClick={() => choose(r.id)}><Icon /><small>{counts[r.id] || '·'}</small></button> })}</div>}
   </div>
 }
 
@@ -72,14 +76,14 @@ function PollCard({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => vo
   const voted = poll.selectedOption !== null
   const votesWord = new Intl.PluralRules('ru').select(total)
   return <section className="poll-card" aria-label={`Опрос: ${poll.question}`}>
-    <div className="poll-kicker"><BarChart3 size={15} /><span>НА ОДНОЙ ВОЛНЕ</span><span>Опрос</span></div>
+    <div className="poll-kicker"><BarChart3 /><span>НА ОДНОЙ ВОЛНЕ</span><span>Опрос</span></div>
     <h3>{poll.question}</h3>
     <div className="poll-vote-options">{poll.options.map(option => {
       const percent = total ? Math.round(option.votes / total * 100) : 0
       const selected = poll.selectedOption === option.id
       return <button key={option.id} className={`${voted ? 'has-results' : ''} ${selected ? 'selected' : ''}`} aria-pressed={selected} onClick={() => onUpdate({ ...post, poll: voteInPoll(poll, option.id) })}>
         {voted && <span className="poll-bar" style={{ width: `${percent}%` }} />}
-        <span className="poll-option-label">{selected && <Check size={15} />}{option.text}</span>
+        <span className="poll-option-label">{selected && <Check />}{option.text}</span>
         {voted ? <strong>{percent}%</strong> : <span className="poll-radio" />}
       </button>
     })}</div>

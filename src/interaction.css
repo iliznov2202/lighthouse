@@ -1,0 +1,37 @@
+/* Consumer interactions use the existing palette and icon system. */
+.feed-order { min-height: 44px; padding: 6px 2px 6px 9px; border-radius: 9px; flex-shrink: 0; }
+.feed-order:hover, .feed-order[aria-expanded=true] { background: var(--tone-f2eff8); color: var(--tone-7b70a8); }
+.feed-order-options > button { justify-content: space-between; gap: 16px; }
+.feed-order-options > button > span { display: flex; flex-direction: column; gap: 5px; }
+.feed-order-options strong { font-size: 15px; font-weight: 600; }
+.feed-order-options small { font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+.feed-order-options > button[aria-pressed=true] { color: var(--tone-7163e7); background: var(--tone-f2eff8); }
+.feed-order-options > button > svg { flex-shrink: 0; }
+.feed-search-results { margin: 8px 2px 15px; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.composer-draft { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-top: 9px; }
+.composer-draft p { font-size: 11px; line-height: 1.6; color: var(--text-secondary); }
+.composer-draft > button { min-height: 44px; padding: 6px 0 6px 8px; font-size: 11px; color: var(--tone-7761da); text-align: right; }
+.modal, .modal.wide { max-height: calc(var(--sheet-viewport-height, 100dvh) - 80px); }
+.modal.comments-sheet { display: flex; flex-direction: column; height: min(680px, calc(var(--sheet-viewport-height, 100dvh) - 80px)); overflow: hidden; }
+.comments-sheet .modal-header { flex-shrink: 0; }
+.comments-sheet .comment-context { flex-shrink: 0; }
+.comments-sheet .comment-context > span { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.comments-sheet .comments-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 3px 16px; scrollbar-width: thin; }
+.comments-sheet .message-input { flex-shrink: 0; margin: 12px 0 0; padding: 6px; border: 1px solid var(--tone-e9e7f3); border-radius: 16px; }
+.comments-sheet .message-input input { min-width: 0; }
+.comments-sheet .send-button { min-width: 44px; min-height: 44px; border-radius: 12px; }
+.reaction-toggle { min-width: 40px; min-height: 44px; }
+.composer-photos button { width: 44px; height: 44px; }
+@media(max-width: 760px) {
+  .app input:not([type=file]):not([type=radio]):not([type=checkbox]), .app textarea, .app select,
+  .modal input:not([type=file]):not([type=radio]):not([type=checkbox]), .modal textarea, .modal select { font-size: 16px; }
+  .modal, .modal.wide { max-height: calc(var(--sheet-viewport-height, 100dvh) - 28px); }
+  .modal.comments-sheet { height: min(680px, calc(var(--sheet-viewport-height, 100dvh) - 28px)); }
+  .modal-handle { flex-shrink: 0; width: 64px; height: 28px; margin: 0 auto 4px; background: transparent; position: relative; }
+  .modal-handle::after { content: ''; position: absolute; width: 38px; height: 5px; top: 10px; left: 13px; border-radius: 9px; background: var(--tone-e1d9ea); }
+  .post-actions > button:last-child { min-width: 44px; }
+  .heading-search, .post-header > .icon-button, .modal-header > .icon-button { min-width: 44px; min-height: 44px; }
+  .post-author > span { font-size: 12px; }
+  .feed-toolbar { flex-wrap: wrap; row-gap: 3px; }
+  .feed-order { font-size: 12px; }
+}
