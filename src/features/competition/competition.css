@@ -27,7 +27,7 @@
 .competition-post-cta { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 46px; padding: 10px 14px; background: #eeeafa; border: 1px solid #e6dff7; border-radius: 12px; font-size: 14px; color: #8070b3; margin: 16px 0 8px; font-weight: 600; }
 .competition-page { padding-top: 5px; padding-bottom: 24px; }
 .competition-page-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 28px; }
-.back-link { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; color: #8188a3; }
+.competition-page .back-link { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; color: #8188a3; margin: 0; }
 .competition-demo-control { min-height: 44px; }
 .competition-demo-control .demo-label { padding: 7px 11px; }
 .quiz-progress-heading { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #8388a6; margin-bottom: 13px; }
@@ -126,6 +126,9 @@
 .competition-phase-options small { display: block; font-size: 12px; margin-top: 6px; color: #aaa3b5; line-height: 1.6; }
 @keyframes competition-in { from { opacity: .5; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media(max-width: 600px) {
+  .app.quiz-focus .bottom-nav { display: none; }
+  .app.quiz-focus .main-content { padding-bottom: 30px; }
+  .app.quiz-focus .competition-page-nav { margin-bottom: 22px; }
   .competition-entry { padding: 21px; border-radius: 22px; }
   .competition-entry-gap small { margin-left: 0; flex-basis: 100%; padding-left: 22px; }
   .competition-entry-stats { gap: 25px; }

@@ -20,5 +20,5 @@ export interface CompetitionEvent {
   id: string; quizId: string; title: string; schoolId: string; endsAt: string; referenceTime: string;
   scoring: { personalPerCorrect: number; classPerCorrect: number }
 }
-export interface CompetitionAttempt { answers: QuizAnswer[]; result: QuizResult | null; phase: CompetitionPhase }
+export interface CompetitionAttempt { classId?: string; className?: string; answers: QuizAnswer[]; result: QuizResult | null; phase: CompetitionPhase }
 export type CompetitionView = 'quiz' | 'result' | 'ranking' | null

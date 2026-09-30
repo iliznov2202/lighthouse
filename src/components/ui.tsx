@@ -31,8 +31,8 @@ export function LighthouseLoader({ title = 'Зажигаем Маяк…', descr
     <h2>{title}</h2><p>{description}</p><div className="lighthouse-loader-dots" aria-hidden="true"><i /><i /><i /></div>
   </div>
 }
-export function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className={`brand ${compact ? 'compact' : ''}`}><Lighthouse /><span>Маяк<span className="brand-dot">.</span></span></div>
+export function Brand({ compact = false, animation = 0 }: { compact?: boolean; animation?: number }) {
+  return <div className={`brand ${compact ? 'compact' : ''}`}><Lighthouse key={animation} className={animation ? 'lighthouse-animated lighthouse-logo-animation' : ''} /><span>Маяк<span className="brand-dot">.</span></span></div>
 }
 export function Avatar({ person = 'sasha', size = '', className = '' }: { person?: string; size?: 'small' | 'large' | ''; className?: string }) {
   const colors: Record<string, string> = { sasha: '#dae1ff', masha: '#f9dbe6', artem: '#d9e9f3', dasha: '#dbecda', club: '#ffead1', anonymous: '#ebe5ff' }

@@ -5,21 +5,22 @@ import { applyClassContribution, gradeQuiz, rankClasses, rankStudents } from './
 import type { ClassRanking, CompetitionAttempt, CompetitionEvent, CompetitionPhase, Quiz, QuizResult, StudentRanking } from './types'
 
 export const DEMO_STUDENT_ID = 'current-student'
-export function useCompetition(quiz: Quiz, event: CompetitionEvent, profile: Profile, initialClasses: ClassRanking[], finalClasses: ClassRanking[], students: StudentRanking[]) {
+export function useCompetition(quiz: Quiz, event: CompetitionEvent, profile: Profile, initialClasses: ClassRanking[], finalClasses: ClassRanking[], students: StudentRanking[], newClass: ClassRanking) {
   const [attempts, setAttempts] = useStoredState<Record<string, CompetitionAttempt>>('mayak-competitions-v1', {})
-  const attempt = attempts[event.id] ?? { answers: [], result: null, phase: 'active' }
+  const attempt: CompetitionAttempt = attempts[event.id] ?? { answers: [], result: null, phase: 'active' }
   const locked = useRef(false)
   useEffect(() => { locked.current = false }, [attempt.answers.length, attempt.phase])
-  const participantClass = initialClasses.find(c => c.name === profile.className) ?? {
-    classId: `class-${profile.className}`, schoolId: event.schoolId, name: profile.className, points: 157, participants: 19, members: 28,
+  const className = attempt.className ?? profile.className
+  const participantClass = initialClasses.find(c => attempt.classId ? c.classId === attempt.classId : c.name === className) ?? {
+    ...newClass, classId: attempt.classId ?? `class-${className}`, schoolId: event.schoolId, name: className,
   }
   const classId = participantClass.classId
   const baseClasses = initialClasses.some(c => c.classId === classId) ? initialClasses : [...initialClasses, participantClass]
   const result = attempt.result
-  const final = finalClasses.some(c => c.classId === classId) ? finalClasses : [...finalClasses, { ...participantClass, points: 205, participants: 26 }]
+  const final = finalClasses.some(c => c.classId === classId) ? finalClasses : [...finalClasses, ...applyClassContribution([participantClass], result)]
   const rankings = rankClasses(attempt.phase === 'finished' ? final : applyClassContribution(baseClasses, result), baseClasses)
   const mine = rankings.find(c => c.classId === classId)!
-  const classmates = students.some(s => s.classId === classId) ? students.filter(s => s.classId === classId) : students.map(s => ({ ...s, classId }))
+  const classmates = students.filter(s => s.classId === classId)
   const studentRankings = rankStudents([...classmates.filter(s => s.studentId !== DEMO_STUDENT_ID), { studentId: DEMO_STUDENT_ID, classId, name: profile.name, points: result?.personalPoints ?? 0 }])
 
   function answerQuestion(questionId: string, optionId: string): QuizResult | null {
@@ -29,7 +30,7 @@ export function useCompetition(quiz: Quiz, event: CompetitionEvent, profile: Pro
     locked.current = true
     const answers = [...attempt.answers, { questionId, optionId }]
     const finished = answers.length === quiz.questions.length ? gradeQuiz(quiz, event, answers, baseClasses, classId, DEMO_STUDENT_ID) : null
-    setAttempts(current => ({ ...current, [event.id]: { ...attempt, answers, result: finished } }))
+    setAttempts(current => ({ ...current, [event.id]: { ...attempt, classId, className, answers, result: finished } }))
     return finished
   }
   function setPhase(phase: CompetitionPhase) {

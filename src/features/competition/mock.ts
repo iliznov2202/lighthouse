@@ -36,6 +36,8 @@ export const initialStudentRankings: StudentRanking[] = [
   { studentId: 'maxim', classId: 'class-9b', name: 'Максим', points: 900 },
   { studentId: 'sasha-demo', classId: 'class-9b', name: 'Саша', points: 700 },
 ]
+// Used for a selected class that is absent from the prepared school table.
+export const newClassTemplate: ClassRanking = { classId: '', schoolId: weeklyCompetition.schoolId, name: '', points: 0, participants: 0, members: 28 }
 export function competitionNoticePost(kind: 'leader' | 'last-day' | 'top-three'): Post {
   const texts = {
     leader: '8Б вышел на первое место\nБитва только набирает обороты. Кто сможет догнать ребят?',

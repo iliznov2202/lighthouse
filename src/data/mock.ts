@@ -1,3 +1,4 @@
+import { competitionNoticePost } from '../features/competition/mock'
 import type { Homework, Lesson, Notice, Post, Profile, Subject } from '../types'
 
 export const DEMO_DATE = '2026-09-30'
@@ -45,7 +46,7 @@ export const socialDemoPosts: Post[] = [
     poll: { question: 'Как проведём пятницу после уроков?', options: [{ id: 'park', text: 'В парк за какао ☕', votes: 12 }, { id: 'concert', text: 'На школьный концерт 🎸', votes: 6 }, { id: 'cinema', text: 'Смотреть кино вместе 🍿', votes: 3 }], selectedOption: null } },
   { id: 'demo-photo-v2', author: 'Школьный движ', avatar: 'club', color: 'purple', time: 'Сегодня, 08:30', scope: 'school', text: 'Вот он — наш Маяк 💜\nМесто для своих людей, хороших историй и небольших побед.', likes: 21, liked: false, saved: false, comments: [], photos: [{ id: 'logo-photo', src: `${import.meta.env.BASE_URL}logo-reference.png`, alt: 'Градиентный маяк — логотип нашего приложения' }], reactions: { heart: 21, fire: 5, wow: 7 }, reaction: null },
 ]
-export const initialPosts: Post[] = [basePosts[0], socialDemoPosts[0], ...basePosts.slice(1), socialDemoPosts[1]]
+export const initialPosts: Post[] = [basePosts[0], socialDemoPosts[0], ...basePosts.slice(1), socialDemoPosts[1], competitionNoticePost('leader'), competitionNoticePost('top-three')]
 
 export const initialNotices: Notice[] = [
   { id: 'n1', title: 'Маша ответила тебе', text: '«Даа, встречаемся у входа в парк в 15:30!»', time: '10 минут назад', kind: 'comment', read: false },
