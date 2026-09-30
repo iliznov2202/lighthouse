@@ -51,7 +51,7 @@ export default function App() {
     scrollPositions.current[tab] = window.scrollY
     setTab(next); setSavedOnly(false)
   }
-  function openStudy(next: StudyTab) { navigate('study'); setStudyTab(next) }
+  function openStudy(next: StudyTab) { navigate('study'); setStudyTab(next); scrollPositions.current.study = 0; window.scrollTo({ top: 0, behavior: 'instant' }) }
   function savePost(post: Post): string | void {
     const next = [post, ...posts]
     const serialized = JSON.stringify(next)

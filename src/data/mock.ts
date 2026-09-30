@@ -43,8 +43,7 @@ const basePosts: Post[] = [
 export const socialDemoPosts: Post[] = [
   { id: 'demo-poll-v2', author: 'Даша Морозова', avatar: 'dasha', color: 'mint', time: '40 минут назад', scope: 'class', text: 'Пятница близко. Давайте решим вместе ✨', likes: 9, liked: false, saved: false, comments: [], tag: 'Решаем вместе', reactions: { heart: 9, fire: 4, support: 2 }, reaction: null,
     poll: { question: 'Как проведём пятницу после уроков?', options: [{ id: 'park', text: 'В парк за какао ☕', votes: 12 }, { id: 'concert', text: 'На школьный концерт 🎸', votes: 6 }, { id: 'cinema', text: 'Смотреть кино вместе 🍿', votes: 3 }], selectedOption: null } },
-  { id: 'demo-photo-v2', author: 'Школьный движ', avatar: 'club', color: 'purple', time: 'Сегодня, 08:30', scope: 'school', text: 'Вот он — наш Маяк 💜
-Место для своих людей, хороших историй и небольших побед.', likes: 21, liked: false, saved: false, comments: [], photos: [{ id: 'logo-photo', src: '/logo-reference.png', alt: 'Градиентный маяк — логотип нашего приложения' }], reactions: { heart: 21, fire: 5, wow: 7 }, reaction: null },
+  { id: 'demo-photo-v2', author: 'Школьный движ', avatar: 'club', color: 'purple', time: 'Сегодня, 08:30', scope: 'school', text: 'Вот он — наш Маяк 💜\nМесто для своих людей, хороших историй и небольших побед.', likes: 21, liked: false, saved: false, comments: [], photos: [{ id: 'logo-photo', src: `${import.meta.env.BASE_URL}logo-reference.png`, alt: 'Градиентный маяк — логотип нашего приложения' }], reactions: { heart: 21, fire: 5, wow: 7 }, reaction: null },
 ]
 export const initialPosts: Post[] = [basePosts[0], socialDemoPosts[0], ...basePosts.slice(1), socialDemoPosts[1]]
 

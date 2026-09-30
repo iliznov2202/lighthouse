@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from 'react'
 import type { ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { ArrowRight, Check, Sparkles, X } from 'lucide-react'
 import { subjects } from '../data/mock'
 import type { Subject } from '../types'
@@ -43,17 +44,21 @@ export function Empty({ title, children }: { title: string; children?: ReactNode
 export function SectionTitle({ title, action, onClick }: { title: string; action?: string; onClick?: () => void }) { return <div className="section-title"><h2>{title}</h2>{action && <button className="text-button" onClick={onClick}>{action}<ArrowRight size={15} /></button>}</div> }
 export function Modal({ title, children, onClose, wide = false }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean }) {
   const box = useRef<HTMLDivElement>(null)
+  const dragStart = useRef<number | null>(null)
   const closeRef = useRef(onClose)
   closeRef.current = onClose
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null
     const overflow = document.body.style.overflow
+    const root = document.getElementById('root')
+    const previousInert = root?.inert ?? false
+    if (root) root.inert = true
     document.body.style.overflow = 'hidden'
     box.current?.focus()
     function onKey(event: KeyboardEvent) {
       if (event.key === 'Escape') closeRef.current()
       if (event.key === 'Tab') {
-        const items = box.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), textarea, select, [tabindex="0"]')
+        const items = Array.from(box.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled):not([type="file"]), textarea, select, [tabindex="0"]') ?? []).filter(item => item.tabIndex >= 0 && item.getClientRects().length > 0)
         if (!items?.length) return
         const first = items[0]; const last = items[items.length - 1]
         if (event.shiftKey && (document.activeElement === first || document.activeElement === box.current)) { event.preventDefault(); last.focus() }
@@ -61,9 +66,9 @@ export function Modal({ title, children, onClose, wide = false }: { title: strin
       }
     }
     document.addEventListener('keydown', onKey)
-    return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', onKey); previous?.focus() }
+    return () => { document.body.style.overflow = overflow; if (root) root.inert = previousInert; document.removeEventListener('keydown', onKey); previous?.focus() }
   }, [])
-  return <div className="modal-backdrop" onClick={onClose}><div className={`modal ${wide ? 'wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} ref={box} tabIndex={-1} onClick={e => e.stopPropagation()}><div className="modal-handle" /><header className="modal-header"><h2>{title}</h2><button className="icon-button" aria-label="Закрыть" onClick={onClose}><X size={21} /></button></header>{children}</div></div>
+  return createPortal(<div className="modal-backdrop" onClick={onClose}><div className={`modal ${wide ? 'wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} ref={box} tabIndex={-1} onClick={e => e.stopPropagation()}><button className="modal-handle" aria-label="Закрыть панель" onPointerDown={e => { dragStart.current = e.clientY; e.currentTarget.setPointerCapture(e.pointerId) }} onPointerMove={e => { if (dragStart.current !== null && box.current) { box.current.style.transition = 'none'; box.current.style.transform = `translateY(${Math.min(200, Math.max(0, e.clientY - dragStart.current))}px)` } }} onPointerUp={e => { const distance = dragStart.current === null ? 0 : e.clientY - dragStart.current; dragStart.current = null; if (box.current) { box.current.style.transition = 'transform .2s ease'; box.current.style.transform = '' } if (distance > 65) closeRef.current() }} onPointerCancel={() => { dragStart.current = null; if (box.current) box.current.style.transform = '' }} onClick={onClose} /><header className="modal-header"><h2>{title}</h2><button className="icon-button" aria-label="Закрыть" onClick={onClose}><X size={21} /></button></header>{children}</div></div>, document.body)
 }
 export function Toast({ message }: { message: string }) { return <div className="toast" role="status"><Check size={18} />{message}</div> }
 export function DemoLabel({ children = 'Демо-режим' }: { children?: ReactNode }) { return <span className="demo-label"><Sparkles size={12} />{children}</span> }

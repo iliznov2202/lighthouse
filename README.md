@@ -18,7 +18,24 @@ npm run build
 npm run preview
 ```
 
-## Что работает
+## Публикация на GitHub Pages
+
+В репозитории откройте Settings → Pages → Build and deployment → Source и выберите GitHub Actions.
+Отправьте изменения в ветку `main`. Workflow `.github/workflows/deploy.yml` соберёт приложение и опубликует папку `dist`.
+Дождитесь успешного завершения «Deploy to GitHub Pages» во вкладке Actions; рабочий адрес появится в Settings → Pages.
+Путь к сайту определяется автоматически настройками Pages, включая адрес вида `/lighthouse/`.
+
+Для локальной проверки сборки с этим путём в PowerShell:
+
+```powershell
+$env:VITE_BASE_PATH='/lighthouse/'
+npm run build
+npm run preview
+```
+
+Откройте http://127.0.0.1:4173/lighthouse/.
+
+## Возможности MVP
 
 - Onboarding: поиск среди четырёх демо-школ, имя, класс с 7-го по 11-й и буква класса.
 - Нижняя навигация на мобильном и боковая на desktop: лента, учёба, создание, уведомления, профиль.
