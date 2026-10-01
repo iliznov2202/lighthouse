@@ -1,0 +1,359 @@
+/* Landing layouts build on the application's buttons, cards, inputs and theme.
+   No landing palette or parallel UI kit: colors come from styles.css/colors.css. */
+html[data-surface="landing"] { background: var(--tone-ffffff); scroll-padding-top: 88px; }
+.mayak-site { --text-secondary: var(--tone-68718c); color: var(--navy); background: var(--tone-ffffff); overflow: clip; }
+.mayak-site .eyebrow { color: var(--text-secondary); }
+.mayak-site a { text-decoration: none; }
+.mayak-site :is(a, button, input):focus-visible { outline: 3px solid var(--tone-b2a4ff); outline-offset: 4px; }
+.mayak-site [tabindex="-1"]:focus { outline: none; }
+.ml-container { width: min(1290px, calc(100% - 80px)); margin-inline: auto; }
+.ml-skip { position: fixed; z-index: 40; top: -80px; left: 16px; padding: 14px 20px; border-radius: 13px; color: var(--on-accent) !important; background: var(--primary); }
+.ml-skip:focus { top: 16px; }
+.ml-header { position: sticky; top: 0; z-index: 20; background: var(--tone-ffffffed); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.ml-header-inner { height: 80px; display: flex; align-items: center; gap: 30px; }
+.ml-brand-link { display: inline-flex; border-radius: 10px; }
+.ml-header-tagline { color: var(--text-secondary); font-size: 12px; }
+.ml-header nav { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.ml-header .button { min-height: 44px; padding: 10px 17px; font-size: 13px; }
+.ml-hero { position: relative; isolation: isolate; overflow: clip; scroll-margin-top: 80px; background: radial-gradient(ellipse at 74% 38%, var(--tone-f0edff), transparent 58%), var(--tone-ffffff); }
+.ml-hero-content { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 38px; align-items: center; min-height: max(565px, calc(100svh - 140px)); max-height: 830px; padding-block: 38px; }
+.ml-hero-copy { position: relative; z-index: 2; animation: ml-enter 250ms both; }
+.ml-hero h1 { font-size: clamp(52px, 4.5vw, 72px); font-weight: 750; letter-spacing: -2.6px; line-height: 1.12; margin: 18px 0 22px; }
+.ml-hero-copy > p { font-size: 18px; line-height: 1.75; color: var(--text-secondary); }
+.ml-start { margin-top: 28px; min-width: 214px; }
+.ml-start:hover { transform: translateY(-2px); }
+.ml-start:active { transform: translateY(0); }
+.ml-hero-note { display: flex; align-items: center; gap: 9px; margin-top: 17px; font-size: 12px; color: var(--text-secondary); }
+.ml-hero-note > svg { color: var(--tone-9b8be8); }
+.ml-hero-art { position: relative; min-width: 0; width: 100%; transform: translate(var(--drift-x, 0px), var(--drift-y, 0px)); transition: transform 300ms ease-out; }
+.ml-scene { position: relative; width: 100%; aspect-ratio: 620 / 470; }
+.ml-island-scene { display: block; width: 100%; height: 100%; }
+.ml-main-beacon { position: absolute; width: 53%; height: auto; top: 15%; left: 22%; z-index: 1; filter: drop-shadow(0 15px 18px var(--tone-867cf42b)); }
+.ml-scene-halo { opacity: .7; }
+.ml-horizon-lights { opacity: .55; }
+.ml-foreground-water { animation: ml-wave 7s ease-in-out infinite alternate; }
+.ml-water-rings { transform-origin: 313px 362px; animation: ml-rings 7s ease-in-out infinite alternate; }
+.ml-main-beacon :is(.lighthouse-lantern, .lighthouse-window-one, .lighthouse-window-two, .lighthouse-beam) { transition: opacity 300ms, fill 300ms; }
+.ml-main-beacon .lighthouse-lantern { opacity: .12; }
+.ml-main-beacon :is(.lighthouse-window-one, .lighthouse-window-two, .lighthouse-beam) { opacity: 0; }
+.ml-light-1 .lighthouse-window-one, .ml-light-2 .lighthouse-window-one, .ml-light-3 .lighthouse-window-one { opacity: .9; }
+.ml-light-2 .lighthouse-window-two, .ml-light-3 .lighthouse-window-two { opacity: .9; }
+.ml-light-2 .lighthouse-lantern { opacity: .4; }
+.ml-light-3 .lighthouse-lantern, .ml-light-3 .lighthouse-beam { opacity: 1; }
+.ml-screen-beam { position: absolute; z-index: 0; pointer-events: none; left: 50%; top: 21%; width: 100vw; height: 280px; clip-path: polygon(0 48%, 100% 0, 100% 100%, 0 52%); background: linear-gradient(90deg, #ffd27544, #ffe6a700); opacity: 0; transform-origin: 0 50%; }
+.ml-light-3 .ml-screen-beam { opacity: .5; animation: ml-beam-sweep 2400ms ease-in-out both; }
+.ml-scene-caption { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 8px; font-size: 11px; color: var(--text-secondary); }
+.ml-scene-live { width: 6px; height: 6px; border-radius: 50%; background: var(--tone-9b8be8); }
+.ml-island-badge { position: absolute; top: 63%; right: 2%; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 13px; background: var(--tone-ffffff); color: var(--primary); border: 1px solid var(--border); box-shadow: 0 6px 20px var(--tone-7163e718); font-size: 12px; animation: ml-enter 240ms both; }
+.ml-hero-bottom { min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border-top: 1px solid var(--border); }
+.ml-scroll-link { font-size: 12px; min-height: 44px; }
+.ml-hero-coordinates { font-size: 10px; letter-spacing: 1px; color: var(--text-secondary); }
+.ml-exit-game { min-height: 44px; font-size: 12px; }
+.ml-hero:not(.ml-phase-initial) .ml-hero-coordinates { display: none; }
+.ml-game-panel { position: relative; z-index: 2; width: 470px; max-width: 100%; }
+.ml-game-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 15px; }
+.ml-game-top > .eyebrow { font-size: 10px; }
+.ml-progress { display: flex; align-items: center; gap: 10px; color: var(--text-secondary); font-size: 12px; flex-shrink: 0; }
+.ml-progress > div { display: flex; gap: 5px; }
+.ml-progress > div > span { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid var(--tone-cfc6f5); border-radius: 50%; background: var(--tone-ffffff); color: var(--on-accent); transition: background 220ms, border-color 220ms; }
+.ml-progress > div > span > span { width: 5px; height: 5px; border-radius: 50%; background: var(--tone-cfc6f5); }
+.ml-progress > div > span.is-lit { background: var(--primary); border-color: var(--primary); animation: ml-spark 260ms; }
+.ml-progress .is-lit > svg { width: 24px; }
+.ml-game-card { padding: 26px; border-radius: var(--radius); box-shadow: 0 12px 35px var(--tone-70719913); animation: ml-enter 220ms both; }
+.ml-game-card.ml-task-leaving { animation: ml-leave 150ms both; pointer-events: none; }
+.ml-task-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; color: var(--tone-9b8be8); }
+.ml-task-label .eyebrow { font-size: 10px; color: var(--text-secondary); }
+.ml-game-card h2 { font-size: 27px; font-weight: 740; letter-spacing: -.8px; line-height: 1.23; }
+.ml-task-description { font-size: 13px; line-height: 1.65; color: var(--text-secondary); margin-top: 10px; }
+.ml-quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 22px; }
+.ml-quiz-options > button { min-height: 59px; border-radius: 13px; gap: 10px; padding: 11px; }
+.ml-quiz-options > button > span { min-width: 27px; height: 27px; border-radius: 8px; font-size: 12px; }
+.ml-quiz-options > button > strong { font-size: 14px; }
+.ml-quiz-options > button.is-correct { background: var(--mint-bg); border-color: var(--tone-66a586); opacity: 1; }
+.ml-quiz-options > button.is-wrong { background: var(--pink-bg); border-color: var(--tone-c16481); }
+.ml-feedback { min-height: 40px; display: flex; align-items: center; font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-top: 12px; }
+.ml-feedback.is-positive { color: var(--navy); }
+.ml-star-instructions { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ml-star-count { flex-shrink: 0; color: var(--primary); font-size: 13px; font-weight: 650; }
+.ml-star-arena { position: relative; height: 200px; margin-top: 16px; overflow: hidden; border-radius: 15px; background: var(--tone-f0edff); border: 1px solid var(--tone-e9e7f3); }
+.ml-star-grid { position: absolute; inset: 0; background-image: radial-gradient(var(--tone-cfc6f5) 1px, transparent 1px); background-size: 28px 28px; opacity: .6; }
+.ml-catch-star { position: absolute; width: 64px; height: 64px; display: grid; place-items: center; transform: translate(-50%, -50%); border-radius: 50%; background: var(--tone-ffffff); color: var(--primary); border: 1px solid var(--tone-cfc6f5); box-shadow: 0 5px 13px var(--tone-7163e718); animation: ml-star-in 200ms both; transition: opacity 180ms, transform 180ms, background 180ms; }
+.ml-catch-star:hover { background: var(--tone-e9e4fc); }
+.ml-catch-star:active { transform: translate(-50%, -50%) scale(.95); }
+.ml-catch-star.is-caught { animation: none; opacity: 0; transform: translate(-50%, -50%) scale(.8); pointer-events: none; }
+.ml-star-burst { position: absolute; color: var(--primary); font-size: 15px; pointer-events: none; animation: ml-star-burst 220ms forwards; }
+.ml-arena-success { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--primary); font-size: 14px; animation: ml-enter 220ms both; }
+.ml-interest-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin: 20px 0; }
+.ml-interest-options > button { display: flex; align-items: center; text-align: left; gap: 9px; min-height: 78px; padding: 11px; border: 1px solid var(--tone-e9e7f3); border-radius: 14px; background: var(--tone-ffffff); transition: border-color 180ms, background 180ms, transform 180ms; }
+.ml-interest-options > button:hover:not(:disabled) { background: var(--tone-f5f3fc); border-color: var(--tone-b2a4ff); transform: translateY(-1px); }
+.ml-interest-options > button[aria-pressed="true"] { background: var(--tone-f0edff); border-color: var(--tone-a096f6); }
+.ml-interest-options > button:disabled { transform: none; opacity: .45; }
+.ml-interest-options .feature-icon { width: 33px; height: 33px; border-radius: 10px; }
+.ml-interest-options strong { display: block; font-size: 13px; font-weight: 650; }
+.ml-interest-options small { display: block; font-size: 10px; color: var(--text-secondary); margin-top: 5px; }
+.ml-choice-check { width: 19px; height: 19px; border: 1px solid var(--tone-cfc6f5); border-radius: 6px; margin-left: auto; flex-shrink: 0; display: grid; place-items: center; }
+.ml-interest-options > button[aria-pressed="true"] .ml-choice-check { background: var(--primary); border-color: var(--primary); color: var(--on-accent); }
+.ml-choice-check > svg.mayak-icon { transform: scale(.7); }
+.ml-earned { display: flex; align-items: baseline; gap: 9px; padding: 18px 0; color: var(--primary); }
+.ml-earned > strong { font-size: 56px; line-height: 1; letter-spacing: -2px; font-weight: 750; }
+.ml-earned > span { font-size: 17px; color: var(--text-secondary); }
+.ml-profile-preview { display: flex; align-items: center; gap: 12px; border-radius: 15px; background: var(--tone-f5f3fc); padding: 12px; }
+.ml-profile-preview > div { min-width: 0; flex: 1; }
+.ml-profile-preview strong { font-size: 14px; display: block; }
+.ml-profile-preview div > span { display: block; color: var(--text-secondary); font-size: 11px; margin-top: 5px; }
+.ml-complete-copy { color: var(--text-secondary); font-size: 13px; line-height: 1.7; margin: 17px 0; }
+.ml-complete-login { margin-top: 9px; font-size: 13px; }
+.ml-replay { display: flex; margin: 10px auto 0; min-height: 36px; font-size: 12px; }
+.ml-section { padding-block: 58px; }
+.ml-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.ml-section-heading .eyebrow, .ml-ranking-copy > .eyebrow { margin-bottom: 13px; }
+.ml-section h2 { font-size: 33px; font-weight: 750; line-height: 1.2; letter-spacing: -.9px; }
+.ml-section-heading > p { color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
+.ml-team-chain { display: grid; grid-template-columns: repeat(4, 1fr); padding: 24px; }
+.ml-chain-item { display: flex; align-items: center; position: relative; gap: 14px; padding-right: 25px; }
+.ml-chain-item:not(:first-child) { padding-left: 20px; }
+.ml-chain-item h3 { font-size: 16px; }
+.ml-chain-item p { margin-top: 5px; font-size: 12px; color: var(--text-secondary); }
+.ml-chain-arrow { position: absolute; right: -8px; color: var(--tone-9b8be8); }
+.ml-activities { background: var(--tone-f7f8fc); }
+.ml-activity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.ml-activity.competition-entry { grid-template-columns: 1fr; margin: 0; padding: 21px; gap: 17px; border-radius: var(--radius); transition: transform 200ms, border-color 200ms, box-shadow 200ms; }
+.ml-activity:hover { transform: translateY(-3px); border-color: var(--tone-b2a4ff); box-shadow: 0 8px 24px var(--tone-7163e718); }
+.ml-activity .competition-entry-top > span { font-size: 11px; letter-spacing: 0; }
+.ml-activity .competition-entry-heading h2 { font-size: 20px; white-space: normal; line-height: 1.35; min-height: 54px; }
+.ml-activity .competition-entry-heading p { font-size: 13px; line-height: 1.6; margin-top: 8px; }
+.ml-activity .competition-entry-actions { align-self: end; }
+.ml-activity .competition-entry-actions .button { min-height: 44px; }
+.ml-ranking-layout { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 64px; }
+.ml-ranking-copy > p { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin: 20px 0 25px; max-width: 350px; }
+.ml-ranking-board { padding: 20px; margin: 0; }
+.ml-ranking-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 3px 12px 22px; }
+.ml-ranking-header h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; }
+.ml-ranking-header svg { color: var(--primary); }
+.ml-ranking-board .ranking-row > div { min-width: 0; }
+.ml-ranking-board .ranking-row div > strong { color: var(--navy); font-size: 15px; }
+.ml-ranking-board .ranking-row div > small { color: var(--text-secondary); }
+.ml-ranking-board .ranking-position { color: var(--text-secondary); }
+.ml-ranking-board .ranking-points { color: var(--primary); white-space: nowrap; }
+.ml-school-avatar-2 { background: var(--blue-bg); color: var(--tone-508ad5); }
+.ml-school-avatar-3 { background: var(--pink-bg); color: var(--tone-d180a1); }
+.ml-ranking-you { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); padding: 18px 12px 0; margin-top: 10px; }
+.ml-ranking-you > div { flex: 1; }
+.ml-ranking-you strong { font-size: 13px; display: block; }
+.ml-ranking-you small { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 5px; }
+.ml-final-cta { padding: 5px 0 56px; }
+.ml-final-card { display: flex; align-items: center; gap: 22px; padding: 30px; background: var(--tone-f5f3fc); }
+.ml-final-card > div { flex: 1; min-width: 0; }
+.ml-final-card h2 { font-size: 25px; letter-spacing: -.5px; line-height: 1.3; }
+.ml-final-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-top: 10px; max-width: 620px; }
+.ml-final-card > .button { flex-shrink: 0; }
+.ml-footer { border-top: 1px solid var(--border); padding-top: 35px; background: var(--tone-ffffff); }
+.ml-footer-top { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 40px; padding-bottom: 28px; }
+.ml-footer-top > div > p { color: var(--text-secondary); font-size: 12px; margin-top: 12px; }
+.ml-footer-top nav { display: grid; gap: 13px; font-size: 12px; color: var(--text-secondary); }
+.ml-footer a { transition: color 180ms; }
+.ml-footer nav > a:hover { color: var(--primary); }
+.ml-footer-cta { align-self: start; justify-self: end; font-size: 14px; }
+.ml-footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 11px; }
+.ml-footer-bottom a { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--primary); }
+.ml-info-page { max-width: 760px; min-height: 500px; padding-block: 50px 90px; }
+.ml-info-page h1 { font-size: 38px; line-height: 1.25; letter-spacing: -1px; }
+.ml-info-page .eyebrow { margin: 30px 0 16px; }
+.ml-info-page > p { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin: 25px 0 30px; }
+.ml-back { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); min-height: 44px; font-size: 13px; }
+.ml-demo-loading { display: grid; place-items: center; min-height: 100svh; color: var(--primary); background: var(--tone-ffffff); }
+.registration-intro-reward { display: flex; align-items: center; gap: 12px; padding: 13px 15px; margin: 0 0 20px; border-radius: 15px; border: 1px solid var(--tone-e9e7f3); background: var(--tone-f0edff); color: var(--primary); }
+.registration-intro-reward strong { display: block; font-size: 14px; }
+.registration-intro-reward p { color: var(--text-secondary); font-size: 12px; line-height: 1.5; margin-top: 4px; }
+.registration-home { display: inline-flex; padding: 0; border-radius: 10px; min-height: 44px; }
+@keyframes ml-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ml-leave { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-6px); } }
+@keyframes ml-wave { from { transform: translateX(-4px); } to { transform: translateX(4px); } }
+@keyframes ml-rings { from { transform: scale(.99); } to { transform: scale(1.015); } }
+@keyframes ml-beam-sweep { 0% { opacity: 0; transform: rotate(-22deg); } 30% { opacity: .6; } 100% { opacity: .35; transform: rotate(18deg); } }
+@keyframes ml-spark { 50% { box-shadow: 0 0 0 4px var(--tone-7163e718); } }
+@keyframes ml-star-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ml-star-burst { from { opacity: 1; transform: translate(-50%, -25%); } to { opacity: 0; transform: translate(-50%, -80%); } }
+@media (min-width: 1600px) { .ml-hero h1 { font-size: 78px; } }
+@media (max-width: 1100px) {
+  .ml-container { width: calc(100% - 52px); }
+  .ml-hero-content { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  .ml-hero h1 { font-size: 56px; }
+  .ml-game-card { padding: 22px; }
+  .ml-game-top > .eyebrow { display: none; }
+  .ml-game-top { justify-content: flex-start; }
+  .ml-game-card h2 { font-size: 25px; }
+  .ml-interest-options > button { gap: 8px; padding: 9px; }
+  .ml-interest-options .feature-icon { display: none; }
+  .ml-chain-item { gap: 10px; padding-right: 10px; }
+  .ml-chain-item:not(:first-child) { padding-left: 14px; }
+  .ml-chain-item p { font-size: 11px; }
+  .ml-activity-grid { gap: 12px; }
+  .ml-activity.competition-entry { padding: 18px; }
+  .ml-activity .competition-entry-top > span { font-size: 10px; }
+  .ml-activity .competition-entry-top .tag { display: none; }
+  .ml-activity .competition-entry-heading h2 { font-size: 18px; min-height: 72px; }
+  .ml-ranking-layout { gap: 30px; }
+  .ml-ranking-board { padding: 14px; }
+  .ml-ranking-board .ranking-row { gap: 10px; }
+  .ml-final-card { gap: 16px; padding: 25px; }
+  .ml-final-card h2 { font-size: 22px; }
+}
+@media (min-width: 641px) and (max-width: 850px) {
+  .ml-header-tagline { display: none; }
+  .ml-hero-content { min-height: 610px; }
+  .ml-hero h1 { font-size: 47px; }
+  .ml-hero-copy > p { font-size: 16px; }
+  .ml-hero-note { font-size: 10px; }
+  .ml-game-card { padding: 19px; }
+  .ml-game-card h2 { font-size: 23px; }
+  .ml-quiz-options > button { gap: 6px; padding: 9px 7px; }
+  .ml-quiz-options > button > span { min-width: 23px; height: 26px; }
+  .ml-quiz-options > button > strong { font-size: 13px; }
+  .ml-profile-preview { gap: 8px; padding: 10px; }
+  .ml-profile-preview .tag { display: none; }
+  .ml-section h2 { font-size: 29px; }
+  .ml-section-heading { gap: 16px; }
+  .ml-team-chain { grid-template-columns: 1fr 1fr; gap: 22px; }
+  .ml-chain-item { padding: 0 !important; }
+  .ml-chain-arrow { right: 20px; }
+  .ml-activity-grid { grid-template-columns: 1fr; }
+  .ml-activity.competition-entry { grid-template-columns: 1fr auto; gap: 8px 22px; }
+  .ml-activity .competition-entry-heading h2 { min-height: 0; font-size: 19px; }
+  .ml-activity .competition-entry-actions { align-self: center; }
+  .ml-ranking-layout { grid-template-columns: 1fr; gap: 26px; }
+  .ml-ranking-copy > p { max-width: 500px; }
+  .ml-ranking-board { padding: 18px; }
+  .ml-final-card { flex-wrap: wrap; }
+  .ml-final-card > .button { margin-left: 65px; }
+}
+@media (max-width: 640px) {
+  html[data-surface="landing"] { scroll-padding-top: 72px; }
+  .ml-container { width: calc(100% - 40px); }
+  .ml-header-inner { height: 72px; gap: 12px; }
+  .ml-header-tagline { display: none; }
+  .ml-header nav { gap: 8px; }
+  .ml-header .button { padding: 10px 12px; font-size: 12px; }
+  .ml-header-register > svg { display: none; }
+  .ml-header .brand > .lighthouse { width: 35px; height: 35px; }
+  .ml-header .brand > span { font-size: 25px; }
+  .ml-hero { scroll-margin-top: 72px; }
+  .ml-hero-content { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: none; padding: 28px 0 16px; }
+  .ml-hero-copy { text-align: center; width: 100%; }
+  .ml-hero h1 { font-size: 44px; letter-spacing: -1.6px; margin: 14px 0; }
+  .ml-hero-copy > p { font-size: 15px; line-height: 1.6; }
+  .ml-start { margin-top: 20px; min-height: 48px; }
+  .ml-hero-note { justify-content: center; margin-top: 12px; font-size: 11px; }
+  .ml-hero-note > svg { display: none; }
+  .ml-hero-art { width: min(100%, 380px); margin-top: -14px; }
+  .ml-scene-caption { font-size: 10px; margin-top: 0; }
+  .ml-island-badge { font-size: 10px; padding: 6px 9px; right: 0; top: 67%; }
+  .ml-hero-bottom { min-height: 50px; }
+  .ml-scroll-link, .ml-exit-game { font-size: 10px; gap: 5px; }
+  .ml-hero-coordinates { display: none; }
+  .ml-hero:not(.ml-phase-initial) .ml-hero-content { padding-top: 0; padding-bottom: 12px; }
+  .ml-hero:not(.ml-phase-initial) .ml-hero-art { order: -1; width: 180px; margin-top: -20px; margin-bottom: 0; pointer-events: none; }
+  .ml-hero:not(.ml-phase-initial) .ml-scene-caption, .ml-hero:not(.ml-phase-initial) .ml-island-badge { display: none; }
+  .ml-game-panel { width: 100%; max-width: 430px; }
+  .ml-game-top { justify-content: space-between; margin-bottom: 10px; }
+  .ml-game-top > .eyebrow { display: block; font-size: 9px; letter-spacing: .6px; }
+  .ml-progress { font-size: 11px; gap: 7px; }
+  .ml-progress > div > span { width: 24px; height: 24px; }
+  .ml-game-card { padding: 20px; }
+  .ml-game-card h2 { font-size: 23px; }
+  .ml-task-label { margin-bottom: 10px; }
+  .ml-task-description { font-size: 12px; line-height: 1.6; margin-top: 8px; }
+  .ml-quiz-options { margin-top: 17px; gap: 8px; }
+  .ml-quiz-options > button { min-height: 53px; gap: 8px; }
+  .ml-feedback { font-size: 11px; min-height: 36px; margin-top: 10px; }
+  .ml-star-arena { height: 175px; margin-top: 13px; }
+  .ml-interest-options { margin: 16px 0; gap: 8px; }
+  .ml-interest-options > button { min-height: 68px; gap: 7px; padding: 10px; }
+  .ml-interest-options .feature-icon { display: grid; width: 30px; height: 30px; }
+  .ml-interest-options small { font-size: 9px; }
+  .ml-interest-options strong { font-size: 12px; }
+  .ml-choice-check { width: 17px; height: 17px; }
+  .ml-earned { padding: 12px 0; }
+  .ml-earned > strong { font-size: 46px; }
+  .ml-profile-preview { gap: 9px; padding: 10px; }
+  .ml-profile-preview .avatar { width: 34px; height: 34px; }
+  .ml-profile-preview strong { font-size: 13px; }
+  .ml-profile-preview div > span { font-size: 10px; }
+  .ml-profile-preview .tag { font-size: 10px; }
+  .ml-complete-copy { font-size: 12px; line-height: 1.6; margin: 13px 0; }
+  .ml-complete-login { min-height: 44px; }
+  .ml-replay { margin-top: 4px; }
+  .ml-section { padding-block: 36px; }
+  .ml-section h2 { font-size: 27px; letter-spacing: -.7px; }
+  .ml-section-heading { display: block; margin-bottom: 23px; }
+  .ml-section-heading > p { font-size: 13px; margin-top: 12px; }
+  .ml-section-heading > .tag { margin-top: 14px; }
+  .ml-team-chain { grid-template-columns: 1fr 1fr; gap: 24px 14px; padding: 20px; }
+  .ml-chain-item { gap: 10px; padding: 0 !important; }
+  .ml-chain-item .feature-icon { width: 35px; height: 35px; border-radius: 11px; }
+  .ml-chain-item h3 { font-size: 14px; }
+  .ml-chain-item p { font-size: 10px; }
+  .ml-chain-arrow { display: none; }
+  .ml-activity-grid { grid-template-columns: 1fr; gap: 12px; }
+  .ml-activity.competition-entry { padding: 19px; gap: 13px; }
+  .ml-activity .competition-entry-top > span { font-size: 11px; }
+  .ml-activity .competition-entry-top .tag { display: inline-flex; }
+  .ml-activity .competition-entry-heading h2 { min-height: 0; font-size: 19px; }
+  .ml-activity .competition-entry-actions .button { font-size: 13px; }
+  .ml-ranking-layout { grid-template-columns: 1fr; gap: 25px; }
+  .ml-ranking-copy > p { margin-top: 15px; font-size: 14px; }
+  .ml-ranking-board { padding: 12px; }
+  .ml-ranking-header { padding: 7px 6px 20px; gap: 8px; }
+  .ml-ranking-header h3 { font-size: 15px; gap: 8px; }
+  .ml-ranking-board .ranking-row { padding: 10px 6px; gap: 9px; min-height: 73px; }
+  .ml-ranking-board .ranking-row div > strong { font-size: 12px; }
+  .ml-ranking-board .ranking-row div > small { font-size: 10px; }
+  .ml-ranking-board .ranking-position { width: 12px; font-size: 12px; }
+  .ml-ranking-board .ranking-points { font-size: 15px; }
+  .ml-ranking-board .class-avatar { min-width: 33px; width: 33px; height: 35px; }
+  .ml-ranking-you { gap: 9px; padding-inline: 6px; }
+  .ml-ranking-you .feature-icon { width: 32px; height: 32px; }
+  .ml-ranking-you strong { font-size: 12px; }
+  .ml-ranking-you small { font-size: 10px; }
+  .ml-final-cta { padding-block: 0 36px; }
+  .ml-final-card { display: block; padding: 22px; }
+  .ml-final-card > .feature-icon { margin-bottom: 15px; }
+  .ml-final-card h2 { font-size: 23px; }
+  .ml-final-card p { font-size: 13px; margin: 12px 0 20px; }
+  .ml-final-card > .button { width: 100%; }
+  .ml-footer { padding-top: 28px; }
+  .ml-footer-top { grid-template-columns: 1fr; gap: 24px; padding-bottom: 24px; }
+  .ml-footer-top nav { gap: 14px; }
+  .ml-footer-cta { justify-self: start; }
+  .ml-footer-bottom { flex-wrap: wrap; padding-block: 14px; gap: 0 16px; font-size: 10px; }
+  .ml-footer-bottom > a { width: 100%; }
+  .ml-info-page { padding-block: 25px 55px; min-height: 450px; }
+  .ml-info-page h1 { font-size: 30px; }
+  .ml-info-page > p { font-size: 14px; }
+}
+@media (max-width: 360px) {
+  .ml-container { width: calc(100% - 32px); }
+  .ml-header .brand > .lighthouse { width: 29px; }
+  .ml-header .brand > span { font-size: 23px; }
+  .ml-header .button { padding-inline: 10px; }
+  .ml-header nav { gap: 6px; }
+  .ml-game-card { padding: 17px; }
+  .ml-interest-options .feature-icon { display: none; }
+  .ml-game-top > .eyebrow { font-size: 8px; }
+  .ml-ranking-board .ranking-row { gap: 7px; }
+  .ml-ranking-board .ranking-points { font-size: 14px; }
+  .ml-ranking-board .class-avatar { min-width: 29px; width: 29px; }
+  .ml-ranking-header h3 { font-size: 14px; }
+  .ml-ranking-header > .tag { font-size: 9px; }
+}
+@media (max-width: 640px) and (max-height: 760px) {
+  .ml-phase-initial .ml-hero-content { padding-top: 20px; }
+  .ml-phase-initial h1 { font-size: 40px; }
+  .ml-phase-initial .ml-hero-note { margin-top: 10px; }
+  .ml-phase-initial .ml-hero-art { width: 290px; margin-top: -20px; }
+  .ml-phase-initial .ml-scene-caption { margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mayak-site *, .mayak-site *::before, .mayak-site *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .ml-light-3 .ml-screen-beam { opacity: .25; transform: none; }
+}

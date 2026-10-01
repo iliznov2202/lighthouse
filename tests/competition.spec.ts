@@ -4,7 +4,7 @@ import { knowledgeQuiz, weeklyCompetition, initialClassRankings } from '../src/f
 import { applyClassContribution, gradeQuiz, nextClassGap, rankClasses } from '../src/features/competition/logic'
 
 async function demo(page: Page) {
-  await page.goto('/')
+  await page.goto('/demo')
   await page.getByRole('button', { name: 'Заглянуть в демо 9Б' }).click()
 }
 async function answer(page: Page, index: number, correct = true) {
@@ -27,15 +27,18 @@ test('quiz: real score, class movement, personal ranking and a single school pos
   page.on('pageerror', error => errors.push(error.message))
   await demo(page)
   const card = page.getByRole('region', { name: 'Еженедельный квиз' })
-  await expect(card.getByText('4 место', { exact: true })).toBeVisible()
-  await page.screenshot({ path: `artifacts/competition-entry-${testInfo.project.name}.png` })
+  // The compact feed card hides ranking details; verify the visible league screen.
+  await card.getByRole('button', { name: 'Открыть рейтинг', exact: true }).click()
+  await expect(page.locator('[data-class-id="class-9b"] .ranking-position')).toHaveText('4')
+  await page.getByRole('button', { name: 'К ленте', exact: true }).click()
+  await page.screenshot({ path: testInfo.outputPath('competition-entry.png') })
   await complete(page)
   await expect(page.locator('.quiz-result-score')).toHaveText('8из 10')
   await expect(page.locator('.quiz-score-cards')).toContainText('800очков')
   await expect(page.locator('.quiz-score-cards')).toContainText('+8очков')
   await expect(page.getByText('9Б поднялся с 4-го на 3-е место', { exact: true })).toBeVisible()
   await noOverflow(page)
-  await page.screenshot({ path: `artifacts/quiz-result-${testInfo.project.name}.png`, fullPage: true })
+  await page.screenshot({ path: testInfo.outputPath('quiz-result.png'), fullPage: true })
   await page.getByRole('button', { name: 'Поделиться результатом', exact: true }).click()
   await expect(page.getByLabel('Текст для своих')).toHaveValue(/8 из 10/)
   await expect(page.getByText('Демо-карточка для обмена. Системная отправка пока не подключена.')).toBeVisible()
@@ -43,12 +46,13 @@ test('quiz: real score, class movement, personal ranking and a single school pos
   await page.getByRole('button', { name: 'Посмотреть рейтинг', exact: true }).click()
   await expect(page.locator('[data-class-id="class-9b"]')).toHaveClass(/mine/)
   await expect(page.locator('[data-class-id="class-9b"] .ranking-points')).toHaveText('165')
+  await expect(page.locator('[data-class-id="class-9b"] .ranking-position')).toHaveText('3')
   await expect(page.locator('.ranking-team-progress').getByText('До 2 места — 6 очков', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Позвать одноклассников', exact: true }).click()
   await expect(page.getByLabel('Текст для своих')).toHaveValue(/поможем 9Б подняться выше/)
   await page.getByRole('button', { name: 'Готово', exact: true }).click()
   await page.evaluate(() => window.scrollTo(0, 0))
-  await page.screenshot({ path: `artifacts/quiz-ranking-${testInfo.project.name}.png`, fullPage: true })
+  await page.screenshot({ path: testInfo.outputPath('quiz-ranking.png'), fullPage: true })
   await page.getByRole('button', { name: 'Ученики', exact: true }).click()
   await expect(page.locator('[data-student-id="current-student"] .ranking-points')).toHaveText('800')
   await expect(page.locator('[data-student-id="current-student"] .ranking-position')).toHaveText('3')
@@ -58,7 +62,6 @@ test('quiz: real score, class movement, personal ranking and a single school pos
   await page.getByRole('button', { name: 'К моей школе', exact: true }).click()
   await page.getByRole('button', { name: 'К ленте', exact: true }).click()
   await expect(card.getByRole('button', { name: 'Посмотреть результаты', exact: true })).toBeVisible()
-  await expect(card.getByText('3 место', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Вся школа', exact: true }).click()
   const systemPost = page.locator('.competition-system-post').filter({ hasText: '9Б поднялся на 3 место' })
   await expect(systemPost).toHaveCount(1)
@@ -88,7 +91,7 @@ test('quiz: interruption resumes the next question; closing the event prevents n
   await page.reload()
   await page.getByRole('button', { name: 'Продолжить квиз', exact: true }).click()
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '4')
-  await page.screenshot({ path: `artifacts/quiz-question-${testInfo.project.name}.png`, fullPage: true })
+  await page.screenshot({ path: testInfo.outputPath('quiz-question.png'), fullPage: true })
   await page.getByRole('button', { name: 'Демо события', exact: true }).click()
   await page.getByRole('button', { name: /^Последние сутки/ }).click()
   await page.getByRole('button', { name: 'К ленте', exact: true }).click()
@@ -141,7 +144,7 @@ test('scoring uses event rules and unique valid answers; ties and contributions 
 })
 
 test('another selected class starts at zero and receives only its own contribution', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/demo')
   await expect(page.getByRole('button', { name: 'Заглянуть в демо 9Б' })).toBeVisible()
   await page.evaluate(() => {
     const profile = JSON.parse(localStorage.getItem('mayak-profile-v1')!)

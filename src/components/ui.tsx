@@ -5,10 +5,11 @@ import { ArrowRight, Atom, BookOpen, Calculator, Check, Code2, Dumbbell, FlaskCo
 import Sticker from './Sticker'
 import { subjects } from '../data/mock'
 import type { Subject } from '../types'
+import { useUserAvatar } from '../hooks/UserAvatarContext'
 
-export function Lighthouse({ className = '' }: { className?: string }) {
+export function Lighthouse({ className = '', sparks }: { className?: string; sparks?: number }) {
   const id = useId().replace(/:/g, '')
-  return <svg viewBox="0 0 160 150" className={`lighthouse ${className}`} aria-hidden="true">
+  return <svg viewBox="0 0 160 150" className={`lighthouse ${sparks !== undefined ? `lighthouse-stage-${sparks}` : ''} ${className}`} aria-hidden="true">
     <defs>
       <linearGradient id={`${id}tower`} x1="0" y1="1" x2="1" y2="0"><stop stopColor="#34cef4" /><stop offset=".45" stopColor="#653cff" /><stop offset="1" stopColor="#f28ad6" /></linearGradient>
       <linearGradient id={`${id}beam`}><stop stopColor="#ffd275" stopOpacity=".9" /><stop offset="1" stopColor="#ffe6a7" stopOpacity="0" /></linearGradient>
@@ -18,9 +19,10 @@ export function Lighthouse({ className = '' }: { className?: string }) {
     <path d="M68 27 88 11l22 16H68Z" fill={`url(#${id}tower)`} />
     <path d="m75 45-17 66c18-4 37 16 61 8l-18-74Z" fill={`url(#${id}tower)`} />
     <path d="M72 27h34v22H72Z" fill={`url(#${id}tower)`} />
-    <path d="M79 29h20v14H79Z" fill="#fff7d6" />
+    <path className="lighthouse-lantern" d="M79 29h20v14H79Z" fill="#fff7d6" />
     <path className="lighthouse-beam" d="m90 32 70-20v62L90 40Z" fill={`url(#${id}beam)`} />
     <path d="M73 61c8-9 21-12 32-8l5 17c-12-9-25-11-40 7Z" fill="#c59fff" opacity=".7" />
+    {sparks !== undefined && <g><path className="lighthouse-window-one" d="M83 89h12v13H83Z" fill="#fff7d6" /><path className="lighthouse-window-two" d="M84 59h10v12H84Z" fill="#fff7d6" /></g>}
     </g>
     <g className="lighthouse-wave">
       <path d="M7 120c27-62 62-20 89-6 25 13 41 6 53-6-14 40-47 40-76 24-26-14-43-16-66-12Z" fill={`url(#${id}wave)`} />
@@ -38,10 +40,11 @@ export function Brand({ compact = false, animation = 0 }: { compact?: boolean; a
   return <div className={`brand ${compact ? 'compact' : ''}`}><Lighthouse key={animation} className={animation ? 'lighthouse-animated lighthouse-logo-animation' : ''} /><span>Маяк<span className="brand-dot">.</span></span></div>
 }
 export function Avatar({ person = 'sasha', size = '', className = '' }: { person?: string; size?: 'small' | 'large' | ''; className?: string }) {
+  const currentAvatar = useUserAvatar()
   const colors: Record<string, string> = { sasha: '#dae1ff', masha: '#f9dbe6', artem: '#d9e9f3', dasha: '#dbecda', club: '#ffead1', anonymous: '#ebe5ff' }
   const bg = colors[person] || '#e8e2fa'
   return <span className={`avatar ${size} ${className}`} style={{ background: bg }} aria-hidden="true">
-    {person === 'anonymous' ? <Shield /> : person === 'club' ? <Music2 /> : <svg viewBox="0 0 48 48">
+    {person === 'sasha' && currentAvatar ? <img src={currentAvatar} alt="" /> : person === 'anonymous' ? <Shield /> : person === 'club' ? <Music2 /> : <svg viewBox="0 0 48 48">
       <path d="M8 48c0-13 8-17 16-17s16 4 16 17" fill={person === 'masha' ? '#b679a8' : person === 'dasha' ? '#6b947c' : '#737db9'} />
       <ellipse cx="24" cy="21" rx="12" ry="14" fill="#f2c4a3" />
       {person === 'masha' || person === 'dasha' ? <path d="M12 30C5 9 13 5 25 5c12 0 17 14 11 28l-4-12c-7 0-12-4-14-9-1 7-4 11-6 18Z" fill={person === 'masha' ? '#6d473e' : '#8a533e'} /> : <path d="M12 20C9 8 17 4 24 5c11-4 17 7 12 16l-4-9c-4 5-11 4-17 2Z" fill="#403343" />}
@@ -54,7 +57,7 @@ const subjectIcons = { 'Алгебра': Calculator, 'Геометрия': Trian
 export function SubjectIcon({ subject }: { subject: Subject }) { const Icon = subjectIcons[subject]; return <span className={`subject-icon ${subjects[subject].color}`}><Icon /></span> }
 export function Empty({ title, children }: { title: string; children?: ReactNode }) { return <div className="empty-state"><Sticker name="plane" className="empty-sticker" /><h3>{title}</h3><p>{children}</p></div> }
 export function SectionTitle({ title, action, onClick }: { title: string; action?: string; onClick?: () => void }) { return <div className="section-title"><h2>{title}</h2>{action && <button className="text-button" onClick={onClick}>{action}<ArrowRight /></button>}</div> }
-export function Modal({ title, children, onClose, wide = false, className = '' }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean; className?: string }) {
+export function Modal({ title, children, onClose, wide = false, className = '', presentation = 'sheet' }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean; className?: string; presentation?: 'sheet' | 'page' }) {
   const box = useRef<HTMLDivElement>(null)
   const [viewport, setViewport] = useState(() => ({ height: window.visualViewport?.height ?? window.innerHeight, top: window.visualViewport?.offsetTop ?? 0 }))
   const dragStart = useRef<number | null>(null)
@@ -87,11 +90,11 @@ export function Modal({ title, children, onClose, wide = false, className = '' }
       }
     }
     document.addEventListener('keydown', onKey)
-    return () => { document.body.style.overflow = overflow; if (root) root.inert = previousInert; document.removeEventListener('keydown', onKey); previous?.focus() }
+    return () => { document.body.style.overflow = overflow; if (root) root.inert = previousInert; document.removeEventListener('keydown', onKey); previous?.focus({ preventScroll: true }) }
   }, [])
-  return createPortal(<div className="modal-backdrop" style={{ top: viewport.top, height: viewport.height, '--sheet-viewport-height': `${viewport.height}px` } as CSSProperties} onClick={onClose}><div className={`modal ${wide ? 'wide' : ''} ${className}`} role="dialog" aria-modal="true" aria-label={title} ref={box} tabIndex={-1} onClick={e => e.stopPropagation()}><button className="modal-handle" aria-label="Закрыть панель" onPointerDown={e => { dragStart.current = e.clientY; e.currentTarget.setPointerCapture(e.pointerId) }} onPointerMove={e => { if (dragStart.current !== null && box.current) { box.current.style.transition = 'none'; box.current.style.transform = `translateY(${Math.min(200, Math.max(0, e.clientY - dragStart.current))}px)` } }} onPointerUp={e => { const distance = dragStart.current === null ? 0 : e.clientY - dragStart.current; dragStart.current = null; if (box.current) { box.current.style.transition = 'transform .2s ease'; box.current.style.transform = '' } if (distance > 65) closeRef.current() }} onPointerCancel={() => { dragStart.current = null; if (box.current) box.current.style.transform = '' }} onClick={onClose} /><header className="modal-header"><h2>{title}</h2><button className="icon-button" aria-label="Закрыть" onClick={onClose}><X /></button></header>{children}</div></div>, document.body)
+  return createPortal(<div className="modal-backdrop" style={{ top: viewport.top, height: viewport.height, '--sheet-viewport-height': `${viewport.height}px` } as CSSProperties} onClick={onClose}><div className={`modal ${wide ? 'wide' : ''} ${className} modal-${presentation}`} role="dialog" aria-modal="true" aria-label={title} ref={box} tabIndex={-1} onClick={e => e.stopPropagation()}><button className="modal-handle" aria-label="Закрыть панель" onPointerDown={e => { dragStart.current = e.clientY; e.currentTarget.setPointerCapture(e.pointerId) }} onPointerMove={e => { if (dragStart.current !== null && box.current) { box.current.style.transition = 'none'; box.current.style.transform = `translateY(${Math.min(200, Math.max(0, e.clientY - dragStart.current))}px)` } }} onPointerUp={e => { const distance = dragStart.current === null ? 0 : e.clientY - dragStart.current; dragStart.current = null; if (box.current) { box.current.style.transition = 'transform .2s ease'; box.current.style.transform = '' } if (distance > 65) closeRef.current() }} onPointerCancel={() => { dragStart.current = null; if (box.current) box.current.style.transform = '' }} onClick={onClose} /><header className="modal-header"><h2>{title}</h2><button className="icon-button" aria-label="Закрыть" onClick={onClose}><X /></button></header>{children}</div></div>, document.body)
 }
-export function Toast({ message }: { message: string }) { return <div className="toast" role="status"><Check />{message}</div> }
+export function Toast({ message, action }: { message: string; action?: { label: string; run: () => void } }) { return <div className="toast" role="status"><Check /><span>{message}</span>{action && <button type="button" onClick={action.run}>{action.label}</button>}</div> }
 export function DemoLabel({ children = 'Демо-режим' }: { children?: ReactNode }) { return <span className="demo-label"><Sparkles />{children}</span> }
 export function PicnicArt({ concert = false }: { concert?: boolean }) {
   if (concert) return <div className="concert-art"><div className="concert-kicker">ШКОЛА № 57 PRESENTS</div><strong>Твой звук.<br />Твоя сцена.</strong><Sticker name="friends" className="concert-sticker" /><div className="concert-footer">ОТКРЫТЫЙ МИКРОФОН <span>ПТ · 16:00</span></div><Sparkles className="concert-spark" /></div>

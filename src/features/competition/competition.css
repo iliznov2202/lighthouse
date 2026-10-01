@@ -159,3 +159,18 @@
   .ranking-row { gap: 7px; }
 }
 @media(prefers-reduced-motion: reduce) { .quiz-question-card { animation: none; } .quiz-progress-bar > span { transition: none; } }
+
+/* Compact feed invitation: details remain on the competition screen. */
+.competition-entry{padding:16px 18px;border-radius:16px;margin:12px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px}
+.competition-entry-top{grid-column:1 / -1;margin:0}
+.competition-entry-heading{margin:0;align-items:center}
+.competition-entry-heading h2{font-size:19px;margin:0 0 4px}
+.competition-entry-heading p{font-size:12px}
+.competition-entry-stats,.competition-entry-gap{display:none}
+.competition-rank-mark{font-size:25px;margin-left:12px}.competition-rank-mark svg{width:14px;height:14px}
+.competition-entry-actions{align-self:center}
+.competition-entry-actions .button{flex:none;min-height:40px;font-size:13px;padding:9px 14px}
+.competition-entry-actions .competition-secondary{min-height:40px;min-width:40px;padding:8px}
+.competition-entry.finished .competition-entry-actions{grid-column:1 / -1}
+@media(max-width:480px){.competition-entry{gap:10px;padding:14px}.competition-entry-heading h2{font-size:17px}.competition-entry-actions{gap:6px}.competition-entry-actions .button{font-size:12px;padding:9px 10px}}
+@media(max-width:480px){.competition-entry-heading .competition-rank-mark{display:none}.competition-entry-actions .competition-primary>svg{display:none}.competition-entry-heading h2{white-space:nowrap}.competition-entry-heading p{font-size:11px}}

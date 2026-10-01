@@ -31,6 +31,7 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
   const [options, setOptions] = useState(initialDraft?.options ?? ['', ''])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [discarded, setDiscarded] = useState<ReturnType<typeof emptyPostDraft> | null>(null)
   const fileInput = useRef<HTMLInputElement>(null)
   const mounted = useRef(true)
   useEffect(() => { mounted.current = true; return () => { mounted.current = false } }, [])
@@ -46,11 +47,18 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
   }, [mode, text, anonymous, scope, photos, sticker, question, options, profile.school, profile.className])
 
   function discardDraft() {
+    setDiscarded({ mode, text, anonymous, scope, photos, sticker, question, options, school: profile.school, className: profile.className })
     const empty = emptyPostDraft(profile, initialMode)
     setMode(empty.mode); setText(empty.text); setAnonymous(empty.anonymous); setScope(empty.scope)
     setPhotos(empty.photos); setSticker(empty.sticker); setQuestion(empty.question); setOptions(empty.options)
     setError(''); setRestored(false); setStickersOpen(false)
     clearPostDraft()
+  }
+  function restoreDiscarded() {
+    if (!discarded) return
+    setMode(discarded.mode); setText(discarded.text); setAnonymous(discarded.anonymous); setScope(discarded.scope)
+    setPhotos(discarded.photos); setSticker(discarded.sticker); setQuestion(discarded.question); setOptions(discarded.options)
+    setDiscarded(null); setRestored(true)
   }
 
   async function addPhotos(files: FileList | null) {
@@ -73,7 +81,7 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
   function publish() {
     if (!canPublish) return
     const post: Post = {
-      id: crypto.randomUUID(),
+      id: crypto.randomUUID(), mine: true,
       author: anonymous ? `Кто-то из ${profile.className}` : profile.name,
       avatar: anonymous ? 'anonymous' : 'sasha', color: 'purple', time: 'Только что',
       scope, text: text.trim(), likes: 0, liked: false, saved: false, comments: [], anonymous,
@@ -87,7 +95,7 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
     clearPostDraft()
   }
 
-  return <Modal title="Твоя новая история" onClose={onClose}>
+  return <Modal presentation="page" title="Твоя новая история" onClose={onClose}>
     <form className="social-composer" onSubmit={e => { e.preventDefault(); publish() }}>
       <div className="composer-author">
         <Avatar person={anonymous ? 'anonymous' : 'sasha'} />
@@ -102,6 +110,7 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
         <button type="button" className={mode === 'poll' ? 'active' : ''} aria-pressed={mode === 'poll'} onClick={() => setMode('poll')}><BarChart3 />Опрос</button>
       </div>
       {hasContent && <div className="composer-draft"><p role="status">{draftSaved ? restored ? 'Черновик восстановлен' : 'Черновик сохранён на этом устройстве' : 'Не удалось сохранить черновик на устройстве'}</p><button type="button" disabled={loading} onClick={discardDraft}>Очистить черновик</button></div>}
+      {discarded && <div className="draft-undo" role="status"><span>Черновик очищен</span><button type="button" onClick={restoreDiscarded}>Отменить</button></div>}
       <textarea className="post-textarea" aria-label="Текст публикации" placeholder={mode === 'poll' ? 'Добавь пару слов к опросу, если хочется…' : 'Что у тебя нового? Здесь можно быть собой.'} maxLength={2000} value={text} onChange={e => setText(e.target.value)} />
       <div className="composer-count">{text.length} / 2000</div>
       {mode === 'poll' && <div className="poll-editor">
@@ -120,7 +129,7 @@ export default function PostComposer({ profile, onClose, onSave, initialMode = '
       {sticker && <div className="composer-sticker-preview"><Sticker name={sticker} decorative={false} /><button type="button" className="icon-button" aria-label="Убрать стикер" onClick={() => setSticker(null)}><X /></button></div>}
       <input ref={fileInput} className="visually-hidden" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-label="Фотографии для публикации" onChange={e => void addPhotos(e.target.files)} />
       <div className="composer-tools"><button type="button" disabled={loading || photos.length >= 3} onClick={() => fileInput.current?.click()}>{loading ? <LoaderCircle className="spin" /> : <ImagePlus />}<span>{loading ? 'Готовим фото…' : 'Фотографии'}</span>{photos.length > 0 && <small>{photos.length}/3</small>}</button><button type="button" aria-expanded={stickersOpen} aria-controls="post-sticker-picker" onClick={() => setStickersOpen(!stickersOpen)}><Smile /><span>Стикеры</span></button></div>
-      {stickersOpen && <div className="sticker-picker" id="post-sticker-picker" role="group" aria-label="Стикеры Маяка">{stickerNames.map(name => <button key={name} type="button" aria-label={`Стикер: ${stickers[name].label}`} aria-pressed={sticker === name} onClick={() => { setSticker(name); setStickersOpen(false) }}><Sticker name={name} /></button>)}</div>}
+      {stickersOpen && <><p className="sticker-pack-label">На своей волне · стикеры Маяка</p><div className="sticker-picker" id="post-sticker-picker" role="group" aria-label="Стикеры Маяка">{stickerNames.map(name => <button key={name} type="button" aria-label={`Стикер: ${stickers[name].label}`} aria-pressed={sticker === name} onClick={() => { setSticker(name); setStickersOpen(false) }}><Sticker name={name} /><span>{stickers[name].label}</span></button>)}</div></>}
       <div className="anonymous-option"><span className="feature-icon purple"><Shield /></span><div><strong>Без имени</strong><p>Имя и аватар не появятся в публикации</p></div><button className={`switch ${anonymous ? 'on' : ''}`} type="button" role="switch" aria-checked={anonymous} aria-label="Анонимная публикация" onClick={() => setAnonymous(!anonymous)}><span /></button></div>
       {anonymous && <div className="soft-note">Анонимность — для честных мыслей. Давай бережно относиться к другим.</div>}
       {error && <p className="field-error" role="alert">{error}</p>}

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 
 async function demo(page: Page) {
-  await page.goto('/')
+  await page.goto('/demo')
   await page.getByRole('button', { name: 'Заглянуть в демо 9Б', exact: true }).click()
 }
 async function compose(page: Page) { await page.getByRole('button', { name: 'Что нового, Саша?', exact: true }).click() }

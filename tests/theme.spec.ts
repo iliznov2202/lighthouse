@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test('theme follows the system, persists overrides and can return to automatic', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' })
-  await page.goto('/')
+  await page.goto('/demo')
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)')
   await page.emulateMedia({ colorScheme: 'dark' })

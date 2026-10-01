@@ -297,12 +297,12 @@ body:has(.modal-backdrop) .toast { bottom: 24px; }
   .picnic-note { font-size: 10px; }
   .picnic-note > strong { font-size: 12px; }
   .feed-end { font-size: 11px; }
-  .bottom-nav { left: max(12px, calc((100vw - 594px) / 2)); right: max(12px, calc((100vw - 594px) / 2)); bottom: calc(10px + env(safe-area-inset-bottom)); height: 76px; padding: 7px 6px; grid-template-columns: 1fr 1fr .85fr 1.3fr 1fr; border-radius: 27px; border: 1px solid var(--tone-ffffffc9); background: var(--tone-fffffff0); backdrop-filter: blur(22px); box-shadow: 0 4px 35px var(--tone-64587f16), 0 0 0 1px var(--tone-e9e5f080); }
+  .bottom-nav { left: max(12px, calc((100vw - 594px) / 2)); right: max(12px, calc((100vw - 594px) / 2)); bottom: calc(10px + env(safe-area-inset-bottom)); height: 76px; padding: 7px 6px; grid-template-columns: repeat(5, minmax(0, 1fr)); border-radius: 27px; border: 1px solid var(--tone-ffffffc9); background: var(--tone-fffffff0); backdrop-filter: blur(22px); box-shadow: 0 4px 35px var(--tone-64587f16), 0 0 0 1px var(--tone-e9e5f080); }
   .bottom-nav > button { font-size: 10px; gap: 5px; min-height: 59px; border-radius: 19px; padding: 8px 2px; color: var(--tone-9691aa); }
   .bottom-nav > button.active { background: var(--tone-f0eafa); color: var(--tone-8a66b9); font-weight: 600; }
   .bottom-nav > button > svg, .bottom-bell > svg { width: 22px; height: 22px; }
   .bottom-nav .bottom-create { overflow: visible; background: none; }
-  .bottom-create > span { width: 51px; height: 51px; border-radius: 18px; transform: translateY(-12px); border: 4px solid var(--tone-fff); box-sizing: content-box; background: linear-gradient(140deg, var(--tone-8b73d6), var(--tone-b588ce)); box-shadow: 0 6px 19px var(--tone-9d76c635); }
+  .bottom-create > span { width: 51px; height: 51px; border-radius: 18px; transform: none; border: 4px solid var(--tone-fff); box-sizing: content-box; background: linear-gradient(140deg, var(--tone-8b73d6), var(--tone-b588ce)); box-shadow: 0 6px 19px var(--tone-9d76c635); }
   .bottom-bell > i { width: 6px; height: 6px; background: var(--tone-ae82d0); right: -4px; }
   .toast { bottom: calc(105px + env(safe-area-inset-bottom)); font-size: 13px; }
   .section-title h2 { font-size: 19px; }

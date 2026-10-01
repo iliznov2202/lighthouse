@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
 async function demo(page: Page) {
-  await page.goto('/')
+  await page.goto('/demo')
   await page.getByRole('button', { name: 'Заглянуть в демо 9Б', exact: true }).click()
 }
 async function noOverflow(page: Page) {

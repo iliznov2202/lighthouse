@@ -55,8 +55,8 @@ function Reactions({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => v
   const total = Object.values(counts).reduce((sum, count) => sum + (count ?? 0), 0)
   useEffect(() => {
     if (!open) return
-    function outside(event: PointerEvent) { if (!root.current?.contains(event.target as Node)) setOpen(false) }
-    function escape(event: KeyboardEvent) { if (event.key === 'Escape') { event.stopPropagation(); setOpen(false); trigger.current?.focus() } }
+    function outside(event: PointerEvent) { if (!window.matchMedia('(max-width: 760px)').matches && !root.current?.contains(event.target as Node)) setOpen(false) }
+    function escape(event: KeyboardEvent) { if (event.key === 'Escape') { event.stopPropagation(); setOpen(false); trigger.current?.focus({ preventScroll: true }) } }
     document.addEventListener('pointerdown', outside)
     document.addEventListener('keydown', escape)
     return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
@@ -66,7 +66,8 @@ function Reactions({ post, onUpdate }: { post: Post; onUpdate: (post: Post) => v
   return <div className="reaction-control" ref={root}>
     <button className={`reaction-main ${selected ? 'selected' : ''}`} aria-label={`${label}: ${post.author}`} aria-pressed={Boolean(selected)} onClick={() => onUpdate(reactToPost(post, selected ?? 'heart'))}><SelectedIcon /><span>{total}</span></button>
     <button ref={trigger} className="reaction-toggle" aria-label={`Выбрать реакцию: ${post.author}`} aria-expanded={open} onClick={() => setOpen(!open)}><ChevronDown /></button>
-    {open && <div className="reaction-picker" role="group" aria-label="Реакции">{reactionTypes.map(r => { const Icon = reactionIcons[r.id]; return <button key={r.id} aria-label={r.label} title={r.label} aria-pressed={selected === r.id} className={selected === r.id ? 'selected' : ''} onClick={() => choose(r.id)}><Icon /><small>{counts[r.id] || '·'}</small></button> })}</div>}
+    {open && !window.matchMedia('(max-width: 760px)').matches && <div className="reaction-picker" role="group" aria-label="Реакции">{reactionTypes.map(r => { const Icon = reactionIcons[r.id]; return <button key={r.id} aria-label={r.label} title={r.label} aria-pressed={selected === r.id} className={selected === r.id ? 'selected' : ''} onClick={() => choose(r.id)}><Icon /><small>{counts[r.id] || '·'}</small></button> })}</div>}
+    {open && window.matchMedia('(max-width: 760px)').matches && <Modal title="Как тебе публикация?" onClose={() => setOpen(false)}><div className="reaction-sheet-options">{reactionTypes.map(r => { const Icon = reactionIcons[r.id]; return <button key={r.id} aria-label={r.label} aria-pressed={selected === r.id} className={selected === r.id ? 'selected' : ''} onClick={() => choose(r.id)}><Icon /><span>{r.label}</span><small>{counts[r.id] || 0}</small></button> })}</div></Modal>}
   </div>
 }
 

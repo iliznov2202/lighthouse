@@ -1,0 +1,10 @@
+{$API_DOMAIN} {
+  request_body {
+    max_size 32KB
+  }
+  reverse_proxy api:3000 {
+    # Overwrite client-supplied headers. API trusts exactly this proxy hop.
+    header_up X-Forwarded-For {remote_host}
+    header_up X-Forwarded-Proto {scheme}
+  }
+}

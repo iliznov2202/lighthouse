@@ -1,0 +1,55 @@
+import { expect, test, type Page } from '@playwright/test'
+async function demo(page: Page) {
+  await page.goto('/demo')
+  await page.getByRole('button', { name: 'Заглянуть в демо 9Б', exact: true }).click()
+}
+test('comment drafts survive reload and closing a panel preserves the reading position', async ({ page }) => {
+  await demo(page)
+  const button = page.locator('.post-card').first().getByRole('button', { name: /^Комментарии/ })
+  await button.scrollIntoViewIfNeeded()
+  const position = await page.evaluate(() => scrollY)
+  await button.click()
+  await page.getByRole('textbox', { name: 'Комментарий', exact: true }).fill('Вернусь к этому ответу')
+  await page.getByRole('button', { name: 'Закрыть', exact: true }).click()
+  expect(Math.abs(await page.evaluate(() => scrollY) - position)).toBeLessThan(3)
+  await page.reload()
+  await button.click()
+  await expect(page.getByRole('textbox', { name: 'Комментарий', exact: true })).toHaveValue('Вернусь к этому ответу')
+  await page.getByRole('button', { name: 'Отправить комментарий', exact: true }).click()
+  await expect(page.getByText('Комментарий отправлен', { exact: true })).toBeVisible()
+  await expect(page.getByRole('textbox', { name: 'Комментарий', exact: true })).toHaveValue('')
+})
+test('cleared drafts and deleted publications can be restored', async ({ page }) => {
+  await demo(page)
+  await page.getByRole('button', { name: 'Что нового, Саша?', exact: true }).click()
+  await page.getByRole('textbox', { name: 'Текст публикации' }).fill('История с отменой удаления')
+  await page.getByRole('button', { name: 'Очистить черновик', exact: true }).click()
+  await page.getByRole('button', { name: 'Отменить', exact: true }).click()
+  await expect(page.getByRole('textbox', { name: 'Текст публикации' })).toHaveValue('История с отменой удаления')
+  await page.getByRole('button', { name: 'Опубликовать', exact: true }).click()
+  const post = page.locator('.post-card').filter({ hasText: 'История с отменой удаления' })
+  await post.getByRole('button', { name: /^Действия/ }).click()
+  await page.getByRole('button', { name: 'Удалить публикацию', exact: true }).click()
+  await expect(post).toHaveCount(0)
+  await page.getByRole('button', { name: 'Отменить', exact: true }).click()
+  await expect(post).toBeVisible()
+})
+test('mobile reactions use a sheet and touch controls stay accessible at 320px', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile')
+  await demo(page)
+  await page.setViewportSize({ width: 320, height: 740 })
+  const post = page.locator('.post-card').first()
+  for (const selector of ['.reaction-toggle', '.icon-button', '.post-actions > button']) {
+    for (const element of await post.locator(selector).all()) {
+      const box = await element.boundingBox()
+      expect(box!.width).toBeGreaterThanOrEqual(44)
+      expect(box!.height).toBeGreaterThanOrEqual(44)
+    }
+  }
+  await post.getByRole('button', { name: /^Выбрать реакцию/ }).click()
+  await expect(page.getByRole('dialog', { name: 'Как тебе публикация?' })).toBeVisible()
+  await page.getByRole('button', { name: 'Огонь', exact: true }).click()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(post.getByRole('button', { name: /^Убрать реакцию Огонь/ })).toHaveAttribute('aria-pressed', 'true')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+})

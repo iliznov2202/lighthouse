@@ -1,5 +1,6 @@
 import { ArrowDownRight as LucideArrowDownRight, ArrowLeft as LucideArrowLeft, ArrowRight as LucideArrowRight, ArrowUpRight as LucideArrowUpRight, Atom as LucideAtom, Backpack as LucideBackpack, BarChart3 as LucideBarChart3, Bell as LucideBell, BookOpen as LucideBookOpen, Bookmark as LucideBookmark, Calculator as LucideCalculator, CalendarDays as LucideCalendarDays, Camera as LucideCamera, Check as LucideCheck, CheckCheck as LucideCheckCheck, ChevronDown as LucideChevronDown, ChevronLeft as LucideChevronLeft, ChevronRight as LucideChevronRight, Clock3 as LucideClock3, Cloud as LucideCloud, Code2 as LucideCode2, Dumbbell as LucideDumbbell, Flag as LucideFlag, Flame as LucideFlame, FlaskConical as LucideFlaskConical, Globe2 as LucideGlobe2, GraduationCap as LucideGraduationCap, HandHeart as LucideHandHeart, Heart as LucideHeart, Hourglass as LucideHourglass, ImagePlus as LucideImagePlus, Languages as LucideLanguages, LayoutGrid as LucideLayoutGrid, Leaf as LucideLeaf, ListOrdered as LucideListOrdered, LoaderCircle as LucideLoaderCircle, MapPin as LucideMapPin, MessageCircle as LucideMessageCircle, Moon as LucideMoon, MoreHorizontal as LucideMoreHorizontal, Music2 as LucideMusic2, Newspaper as LucideNewspaper, Pencil as LucidePencil, Plus as LucidePlus, RotateCcw as LucideRotateCcw, Search as LucideSearch, Send as LucideSend, Settings2 as LucideSettings2, Share2 as LucideShare2, Shield as LucideShield, Smile as LucideSmile, Sparkles as LucideSparkles, Sun as LucideSun, Trash2 as LucideTrash2, TrendingUp as LucideTrendingUp, Triangle as LucideTriangle, Upload as LucideUpload, UserRound as LucideUserRound, Users as LucideUsers, UsersRound as LucideUsersRound, X as LucideX } from 'lucide-react'
 import type { LucideIcon, LucideProps } from 'lucide-react'
+import { ArrowDown as LucideArrowDown, Brain as LucideBrain, Gamepad2 as LucideGamepad2, Palette as LucidePalette, Star as LucideStar, Trophy as LucideTrophy } from 'lucide-react'
 
 // Functional icons share one geometry, even in active or selected states.
 export const ICON_SIZE = 24
@@ -72,3 +73,9 @@ export const UserRound = outline(LucideUserRound)
 export const Users = outline(LucideUsers)
 export const UsersRound = outline(LucideUsersRound)
 export const X = outline(LucideX)
+export const ArrowDown = outline(LucideArrowDown)
+export const Brain = outline(LucideBrain)
+export const Gamepad2 = outline(LucideGamepad2)
+export const Palette = outline(LucidePalette)
+export const Star = outline(LucideStar)
+export const Trophy = outline(LucideTrophy)

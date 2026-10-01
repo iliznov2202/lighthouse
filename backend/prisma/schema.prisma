@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String       @id @default(uuid()) @db.Uuid
+  email        String       @unique @db.VarChar(254)
+  passwordHash String
+  name         String       @db.VarChar(100)
+  schoolId     String?      @db.Uuid
+  classId      String?      @db.Uuid
+  school       School?      @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  schoolClass  SchoolClass? @relation(fields: [classId, schoolId], references: [id, schoolId], onDelete: Restrict)
+  sessions     Session[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([schoolId, classId])
+}
+
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @db.Uuid
+  refreshTokenHash String    @unique @db.Char(64)
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model School {
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(200)
+  city      String        @db.VarChar(100)
+  classes   SchoolClass[]
+  users     User[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([name, city])
+}
+
+model SchoolClass {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(10)
+  schoolId  String   @db.Uuid
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([schoolId, name])
+  @@unique([id, schoolId])
+}
+
+// Keep historical actor/resource IDs after the corresponding records are deleted.
+// Never store passwords, tokens, request bodies or free-form user input here.
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  actorId      String   @db.Uuid
+  action       String   @db.VarChar(100)
+  resourceType String   @db.VarChar(50)
+  resourceId   String   @db.Uuid
+  createdAt    DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([resourceType, resourceId, createdAt])
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+.runtime
+.env
+.env.*
+backups
+coverage
+src/generated
+test
+*.dump
